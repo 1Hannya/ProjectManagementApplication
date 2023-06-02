@@ -1,0 +1,30 @@
+{% extends "baseForm.html" %}
+{% block title %}ManagementPro - Регистрация{% endblock title %}
+
+{% block content %}
+{% if tag != "guest" and tag != "Администратор"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag != "Администратор"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "Администратор"%}
+    <form method="POST" action="{% url 'registration' %}" class="form">
+        {% csrf_token %}
+        <br>
+        <div align="center" class="container-fluid">
+            <h3>Чтобы зарегистрировать нового пользователя, необходимо заполнить данные указанные ниже</h3>
+        </div>
+
+        <div align="center" class="container"><br>
+        <table>
+            {{ form }}
+        </table>
+        <br>
+        <input type="submit" class="w-60 btn btn-lg btn-dark" value="Зарегистрироваться" >
+            </div>
+    </form>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends "baseForm.html" %}
+{% block title %}ManagementPro - Новый проект{% endblock title %}
+
+{% block content %}
+{% if tag != "guest" and tag != "Администратор"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "guest"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "Администратор"%}
+    <form method="POST" action="{% url 'newProjectForm' %}" class="form">
+        {% csrf_token %}
+        <div align="center" class="container"><br>
+            <h3>Для создания нового проекта заполните следующие поля</h3>
+            <br>
+        <table align="center">
+            {{ form }}
+        </table>
+        </div>
+        <br>
+        <input type="submit" class="w-60 btn btn-lg btn-dark" value="Создать проект" >
+    </form>
+{% endif %}
+{% endblock content %}

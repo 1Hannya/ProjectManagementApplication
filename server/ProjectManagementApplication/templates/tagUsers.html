@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}ManagementPro - Пользователи{% endblock title %}
+
+{% block content %}
+
+{% if tag == "guest"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "Администратор"%}
+<form class="container-fluid" method="POST" name="form">
+{% if usersList.count > 0 %}
+    <br>
+<h3 align="center">Список пользователей</h3>
+<table align="center" class="table-dark">
+    <thead>
+    <th>Логин</th>
+    <th>Ф.И.О</th>
+    <th>Номер телефона</th>
+    <th>Тег</th>
+    <th>Удалить пользователя</th>
+    </thead>
+    {% for usersList in pageObj %}
+    <tr class="table-light">
+        <td>{{ usersList.login }}</td>
+        <td>{{ usersList.name }}</td>
+        <td>{{ usersList.number }}</td>
+        <td><select name ="tag {{usersList.id}}">
+            {% for i in tagList %}
+            {% if i.name == usersList.tag %}
+                <option selected name ="tag {{usersList.id}}" value={{i.name}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != usersList.tag %}
+                <option name ="tag {{usersList.id}}" value={{i.name}}>{{ i.name }}</option>
+            {% endif %}
+
+            {% endfor %}
+            </select>
+            <input type="button" value="Сохранить" onclick="location.href='/saveEdit/{{usersList.id}}/'+document.forms['form'].elements['tag {{usersList.id}}'].value"></td>
+        <td><a href="/delete/{{usersList.id}}/">Удалить</a></td>
+    </tr>
+    {% endfor %}
+</table>
+    <div class="container-fluid">
+        <span class="example1-pagination_link example1-pagination_link__active">
+            Страница {{ pageObj.number }} из {{ pageObj.paginator.num_pages }}.
+            </span>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for p in pageObj.paginator.page_range %}
+                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endfor %}
+            </ul>
+          </nav>
+    </div>
+{% endif %}
+</form>
+{% endif %}
+
+{% if tag != "Администратор" and tag != "guest"%}
+<form class="container-fluid" method="POST" name="form">
+{% if usersList.count > 0 %}
+    <br>
+<h3 align="center">Список пользователей</h3>
+<table align="center" class="table-dark">
+    <thead>
+    <th>Логин</th>
+    <th>Ф.И.О</th>
+    <th>Номер телефона</th>
+    <th>Тег</th>
+    </thead>
+    {% for usersList in pageObj %}
+    <tr class="table-light">
+        <td>{{ usersList.login }}</td>
+        <td>{{ usersList.name }}</td>
+        <td>{{ usersList.number }}</td>
+        <td>{{ usersList.tag }}</td>
+    </tr>
+    {% endfor %}
+</table>
+    <div class="container-fluid">
+        <span class="example1-pagination_link example1-pagination_link__active">
+            Страница {{ pageObj.number }} из {{ pageObj.paginator.num_pages }}.
+            </span>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for p in pageObj.paginator.page_range %}
+                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endfor %}
+            </ul>
+          </nav>
+    </div>
+{% endif %}
+
+</form>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,68 @@
+    {% load static %}
+    h4 {
+    font-family: Tahoma;
+    }
+    h6 {
+    font-family: Tahoma;
+    }
+    A {
+    color: #000000; /* Цвет текста */
+    font-family: Tahoma;
+    }
+   #textarea_main {
+    background: #FFDAB9; /* Цвет фона */
+    border: 2px solid #000000; /* Параметры рамки */
+    width: 100%; /* Ширина */
+    height: 400px; /* Высота */
+    box-sizing: border-box; /* Алгоритм расчёта ширины */
+    font-size: 14px; /* Размер шрифта */
+    font-family: Tahoma;
+   }
+   #textarea_main_user {
+    background: #FFDAB9; /* Цвет фона */
+    border: 2px solid #000000; /* Параметры рамки */
+    width: 100%; /* Ширина */
+    height: 400px; /* Высота */
+    box-sizing: border-box; /* Алгоритм расчёта ширины */
+    font-size: 14px; /* Размер шрифта */
+    font-family: Tahoma;
+   }
+    TABLE {
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+    width: 90%; /* Ширина таблицы */
+    font-size: 14px; /* Размер шрифта */
+   }
+   TH, TD {
+    border: 1.5px solid black; /* Параметры рамки */
+    text-align: center; /* Выравнивание по центру */
+    padding: 0px; /* Поля вокруг текста */
+    font-size: 14px; /* Размер шрифта */
+   }
+   TH {
+    background: #212529; /* Цвет фона ячейки */
+    height: 30px; /* Высота ячеек */
+    padding: 0; /* Убираем поля вокруг текста */
+    font-size: 14px; /* Размер шрифта */
+   }
+   hr {
+    background-color: black; /* Цвет линии */
+    color: #000000; /* Цвет линии для IE6-7 */
+    height: 5px; /* Толщина линии */
+   }
+    .box_block {
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.box_block li {
+  list-style: none;
+  display: inline;
+  border: 1px solid #cccccc;
+}
+
+.box_div {
+  width: 1150px;
+  background: #c0ffee;
+}

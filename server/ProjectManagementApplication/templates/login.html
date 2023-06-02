@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}ManagementPro - Вход{% endblock title %}
+
+{% block content %}
+    <form method="POST" class="form-signin w-100 m-auto">
+        {% csrf_token %}
+        <br>
+        <h3 align="center">Выполните вход</h3>
+        <div class="w-25 p-0.5 mx-auto">
+            <label><font size="3" face="Tahoma">Логин:</font></label>
+            <input type="text" class="form-control" name="login" />
+        </div>
+        <div class="w-25 p-0.5 mx-auto">
+            <label><font size="3" face="Tahoma">Пароль:</font></label>
+            <input type="password" class="form-control" name="password" />
+        </div>
+        <div align="center" class="w-50 p-3 mx-auto">
+            <input type="submit" class="w-35 btn btn-lg btn-dark" value="Войти" >
+        </div>
+    </form>
+{% endblock content %}

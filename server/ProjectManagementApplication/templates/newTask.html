@@ -1,0 +1,27 @@
+{% extends "baseForm.html" %}
+{% block title %}ManagementPro - Новая задача{% endblock title %}
+
+{% block content %}
+{% if tag != "guest" and tag != "Администратор"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "guest"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "Администратор"%}
+    <form method="POST">
+        <div align="center" class="container"><br>
+        <h3>Для создания новой задачи заполните поля ниже</h3>
+            <br>
+        {% csrf_token %}
+        <table class="table-light">
+            {{ form }}
+        </table>
+            <br>
+        <input type="submit" class="w-60 btn btn-lg btn-dark" value="Создать задачу" >
+        </div>
+    </form>
+{% endif %}
+{% endblock content %}

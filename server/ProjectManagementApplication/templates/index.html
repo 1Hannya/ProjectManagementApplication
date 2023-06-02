@@ -1,0 +1,436 @@
+{% extends "base.html" %}
+{% block title %}ManagementPro - Главная{% endblock title %}
+
+{% block content %}
+{% if tag == "guest"%}
+<div align="center" class="container-fluid">
+    <br>
+    <br>
+    <h3>Для того, чтобы начать пользоваться сервисом получите логин и пароль у администратора</h3>
+</div>
+{% endif %}
+<section>
+{% if tag == "Администратор" %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col">
+      <form method="POST">
+        {% csrf_token %}
+    <p>
+        <h3>Блокнот:</h3>
+        <textarea id="textarea_main" name="comment">{{comment}}</textarea></p>
+    </p>
+        <input align="left" class="w-60 btn btn-dark" type="submit" value="Сохранить" >
+      </form>
+    </div>
+    <div class="col">
+      <form method="POST">
+          <br>
+          <h3>Напоминания по задачам:</h3>
+            {% if upcomingTasks.count > 0%}
+            <div class="table-responsive">
+            <table class="table-dark table-responsive">
+                <thead>
+                <th>Задача</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Назначил</th>
+                <th>Название проекта</th>
+                <th>Статус</th>
+                </thead>
+                {% for upcomingTasks in pageObj1 %}
+                <tr class="table-light">
+                    <td>{{ upcomingTasks.title }}</td>
+                    <td>{{ upcomingTasks.dateStart }}</td>
+                    <td>{{ upcomingTasks.dateEnd }}</td>
+                    <td>{{ upcomingTasks.responsible }}</td>
+                    <td>{{ upcomingTasks.titleProject }}</td>
+                    <td>{{ upcomingTasks.state }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+            <span class="example1-pagination_link example1-pagination_link__active">
+            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
+            </span>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for p in pageObj1.paginator.page_range %}
+                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endfor %}
+            </ul>
+          </nav>
+
+          {% endif %}
+          {% if upcomingTasks.count == 0 %}
+          <p>Приближающихся заданий пока нет</p>
+          {% endif %}
+ </form>
+    </div>
+  </div>
+</div>
+    </section>
+<br>
+<section>
+<div align="center">
+    <h3>Задачи</h3>
+</div>
+<div align="center" class="container-fluid">
+      <form method="POST" name="form">
+          {% if tasks.count == 0 %}
+          <p align="center">У вас пока нет задач</p>
+          {% endif %}
+            {% if tasks.count > 0%}
+          <div class="table-responsive">
+            <table class="table-dark table-condensed table-responsive">
+                <thead>
+                <th>Задача</th>
+                <th>Исполнитель</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Назначил</th>
+                <th>Название проекта</th>
+                <th>Статус</th>
+                <th>Ссылки</th>
+                <th>Комментарий</th>
+                <th>Сохранить</th>
+                <th>Действия</th>
+                </thead>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "В работе"%}
+                <tr class="table-light" bgcolor="White">
+                    <td>{{ tasks.title }}</td>
+                    <td><select name ="executor {{tasks.id}}">
+            {% for i in userList %}
+            {% if i.name == tasks.executor %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executor %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+                    </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><select name="state {{tasks.id}}">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option selected name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
+                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)"></td>
+                    <td><a href="editTaskMain/{{tasks.id}}">Изменить</a><br><br><a href="deleteTaskMain/{{tasks.id}}/">Удалить</a></td>
+                </tr>
+                {% endif %}
+
+
+                {% if tasks.state == "Приостановлена"%}
+                <tr class="table-light" bgcolor="#FFE4B5">
+                    <td>{{ tasks.title }}</td>
+                    <td><select name ="executor {{tasks.id}}">
+            {% for i in userList %}
+            {% if i.name == tasks.executor %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executor %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+            </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><select name="state {{tasks.id}}">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
+                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)"></td>
+                    <td><a href="editTaskMain/{{tasks.id}}">Изменить</a><br><br><a href="deleteTaskMain/{{tasks.id}}/">Удалить</a></td>
+
+                </tr>
+                {% endif %}
+
+                {% if tasks.state == "Сделана"%}
+                <tr class="table-light" bgcolor="#2E8B57">
+                    <td>{{ tasks.title }}</td>
+                    <td><select name ="executor {{tasks.id}}">
+            {% for i in userList %}
+            {% if i.name == tasks.executor %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executor %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+            </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><select name="state {{tasks.id}}">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option selected name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
+                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)"></td>
+                    <td><a href="editTaskMain/{{tasks.id}}">Изменить</a><br><br><a href="deleteTaskMain/{{tasks.id}}/">Удалить</a></td>
+                </tr>
+                {% endif %}
+
+                {% if tasks.state == "Принята"%}
+                <tr class="table-light" bgcolor="#D3D3D3">
+                    <td>{{ tasks.title }}</td>
+                    <td><select name ="executor {{tasks.id}}">
+            {% for i in userList %}
+            {% if i.name == tasks.executor %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executor %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+            </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><select name="state {{tasks.id}}">
+                        <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
+                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)"></td>
+                    <td><a href="editTaskMain/{{tasks.id}}">Изменить</a><br><br><a href="deleteTaskMain/{{tasks.id}}/">Удалить</a></td>
+
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+          </div>
+            {% endif %}
+          <span class="example1-pagination_link example1-pagination_link__active">
+            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
+            </span>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for p in pageObj.paginator.page_range %}
+                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endfor %}
+            </ul>
+          </nav>
+ </form>
+</div>
+{% endif %}
+</section>
+
+
+
+{% if tag != "Администратор" and tag != "guest" %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <form method="POST">
+        {% csrf_token %}
+    <p>
+        <h3>Блокнот:</h3>
+        <textarea id="textarea_main_user" name="comment">{{comment}}</textarea></p>
+    </p>
+        <input class="w-60 btn btn-dark" type="submit" value="Сохранить" >
+      </form>
+    </div>
+    <div class="col-sm">
+      <form method="POST">
+          <br>
+          <h3>Напоминания по задачам:</h3>
+            {% if upcomingTasks.count > 0%}
+            <div class="table-responsive">
+            <table class="table-dark table-responsive">
+                <thead>
+                <th>Задача</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Назначил</th>
+                <th>Название проекта</th>
+                <th>Статус</th>
+                </thead>
+                {% for upcomingTasks in pageObj1 %}
+                <tr class="table-light">
+                    <td>{{ upcomingTasks.title }}</td>
+                    <td>{{ upcomingTasks.dateStart }}</td>
+                    <td>{{ upcomingTasks.dateEnd }}</td>
+                    <td>{{ upcomingTasks.responsible }}</td>
+                    <td>{{ upcomingTasks.titleProject }}</td>
+                    <td>{{ upcomingTasks.state }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+            <span class="example1-pagination_link example1-pagination_link__active">
+            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
+            </span>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for p in pageObj1.paginator.page_range %}
+                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endfor %}
+            </ul>
+          </nav>
+
+          {% endif %}
+          {% if upcomingTasks.count == 0 %}
+          <p>Приближающихся заданий пока нет</p>
+          {% endif %}
+ </form>
+    </div>
+  </div>
+</div>
+    </section>
+
+<section>
+<div align="center">
+    <h3>Задачи</h3>
+</div>
+<div align="center" class="container">
+      <form method="POST" name="form">
+            {% if tasks.count > 0%}
+            <div class="table-responsive">
+            <table class="table-dark table-responsive">
+                <thead>
+                <th>Задача</th>
+                <th>Исполнитель</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Назначил</th>
+                <th>Название проекта</th>
+                <th>Статус</th>
+                <th>Ссылки</th>
+                <th>Комментарий</th>
+                <th>Сохранить</th>
+                </thead>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "В работе"%}
+                <tr class="table-light" bgcolor="White">
+                    <td>{{ tasks.title }}</td>
+                    <td>{{ tasks.executor }}</td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><select name="state {{tasks.id}}">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option selected name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
+                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/mainUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)"></td>
+                </tr>
+                {% endif %}
+
+
+                {% if tasks.state == "Приостановлена"%}
+                <tr class="table-light" bgcolor="#FFE4B5">
+                    <td>{{ tasks.title }}</td>
+                    <td>{{ tasks.executor }}</td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><select name="state {{tasks.id}}">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
+                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/mainUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)"></td>
+                </tr>
+                {% endif %}
+
+                {% if tasks.state == "Сделана"%}
+                <tr class="table-light" bgcolor="#2E8B57">
+                    <td>{{ tasks.title }}</td>
+                    <td>{{ tasks.executor }}</td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><select name="state {{tasks.id}}">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option selected name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
+                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/mainUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)"></td>
+                </tr>
+                {% endif %}
+
+                {% if tasks.state == "Принята"%}
+                <tr class="table-light" bgcolor="#D3D3D3">
+                    <td>{{ tasks.title }}</td>
+                    <td>{{ tasks.executor }}</td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><select name="state {{tasks.id}}">
+                        <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
+                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/mainUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+            </div>
+            {% endif %}
+          <span class="example1-pagination_link example1-pagination_link__active">
+            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
+            </span>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for p in pageObj.paginator.page_range %}
+                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endfor %}
+            </ul>
+          </nav>
+ </form>
+</div>
+{% endif %}
+</section>
+{% endblock content %}

@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+{% block title %}ManagementPro - Проекты{% endblock title %}
+
+{% block content %}
+
+{% if tag != "guest" and tag != "Администратор"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "guest"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "Администратор" %}
+    <form method="POST" name="form">
+        <div align="center" class="container-fluid">
+        {% if project.count == 0 %}
+            <br>
+            <h3>Проекты:</h3>
+            <br>
+            <h6>Проектов нет</h6>
+        {% endif %}
+        {% if project.count > 0 %}
+        <br>
+        <h3>Проекты: <a class="btn btn-dark" href="newProjectForm/">Создать проект</a></h3>
+        <br>
+            <div class="table-responsive">
+            <table class="table-dark table-condensed table-responsive">
+                <thead>
+                <th>Название</th>
+                <th>Имя клиента</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>E-mail</th>
+                <th>Номер телефона</th>
+                <th>Статус</th>
+                <th>Ссылки</th>
+                <th>Комментарий</th>
+                <th>Сохранение</th>
+                <th>Задачи</th>
+                <th>Проект</th>
+                </thead>
+                {% for project in pageObj %}
+                {% if project.state == "Сдан"%}
+                <tr class="table-light" bgcolor="#2E8B57">
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.clientName }}</td>
+                    <td>{{ project.dateStart }}</td>
+                    <td>{{ project.dateEnd }}</td>
+                    <td>{{ project.email }}</td>
+                    <td>{{ project.number }}</td>
+                    <td><select name="state {{project.id}}">
+                        <option name ="state {{project.id}}" value="Принят">Принят</option>
+                        <option name ="state {{project.id}}" value="Приостановлен">Приостановлен</option>
+                        <option name ="state {{project.id}}" value="В работе">В работе</option>
+                        <option selected name ="state {{project.id}}" value="Сдан">Сдан</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{project.id}}">{{project.link}}</textarea></td>
+                    <td><textarea name="comment {{project.id}}">{{project.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/saveEditProject/{{project.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{project.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{project.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{project.id}}'].value)"></td>
+                    <td><a href="tasks/{{project.id}}">Просмотр</a><br><br><a href="newTask/{{project.id}}">Добавить</a></td>
+                    <td><a href="editProject/{{project.id}}">Изменить</a><br><br><a href="deleteProject/{{project.id}}">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% if project.state == "Приостановлен"%}
+                <tr class="table-light" bgcolor="#FFE4B5">
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.clientName }}</td>
+                    <td>{{ project.dateStart }}</td>
+                    <td>{{ project.dateEnd }}</td>
+                    <td>{{ project.email }}</td>
+                    <td>{{ project.number }}</td>
+                    <td><select name="state {{project.id}}">
+                        <option name ="state {{project.id}}" value="Принят">Принят</option>
+                        <option selected name ="state {{project.id}}" value="Приостановлен">Приостановлен</option>
+                        <option name ="state {{project.id}}" value="В работе">В работе</option>
+                        <option name ="state {{project.id}}" value="Сдан">Сдан</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{project.id}}">{{project.link}}</textarea></td>
+                    <td><textarea name="comment {{project.id}}">{{project.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/saveEditProject/{{project.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{project.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{project.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{project.id}}'].value)"></td>
+                    <td><a href="tasks/{{project.id}}">Просмотр</a><br><br><a href="newTask/{{project.id}}">Добавить</a></td>
+                    <td><a href="editProject/{{project.id}}">Изменить</a><br><br><a href="deleteProject/{{project.id}}">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% if project.state == "Принят"%}
+                <tr class="table-light" bgcolor="#D3D3D3">
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.clientName }}</td>
+                    <td>{{ project.dateStart }}</td>
+                    <td>{{ project.dateEnd }}</td>
+                    <td>{{ project.email }}</td>
+                    <td>{{ project.number }}</td>
+                    <td><select name="state {{project.id}}">
+                        <option selected name ="state {{project.id}}" value="Принят">Принят</option>
+                        <option name ="state {{project.id}}" value="Приостановлен">Приостановлен</option>
+                        <option name ="state {{project.id}}" value="В работе">В работе</option>
+                        <option name ="state {{project.id}}" value="Сдан">Сдан</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{project.id}}">{{project.link}}</textarea></td>
+                    <td><textarea name="comment {{project.id}}">{{project.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/saveEditProject/{{project.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{project.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{project.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{project.id}}'].value)"></td>
+                    <td><a href="tasks/{{project.id}}">Просмотр</a><br><br><a href="newTask/{{project.id}}">Добавить</a></td>
+                    <td><a href="editProject/{{project.id}}">Изменить</a><br><br><a href="deleteProject/{{project.id}}">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% if project.state == "В работе"%}
+                <tr class="table-light" bgcolor="White">
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.clientName }}</td>
+                    <td>{{ project.dateStart }}</td>
+                    <td>{{ project.dateEnd }}</td>
+                    <td>{{ project.email }}</td>
+                    <td>{{ project.number }}</td>
+                    <td><select name="state {{project.id}}">
+                        <option name ="state {{project.id}}" value="Принят">Принят</option>
+                        <option name ="state {{project.id}}" value="Приостановлен">Приостановлен</option>
+                        <option selected name ="state {{project.id}}" value="В работе">В работе</option>
+                        <option name ="state {{project.id}}" value="Сдан">Сдан</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{project.id}}">{{project.link}}</textarea></td>
+                    <td><textarea name="comment {{project.id}}">{{project.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/saveEditProject/{{project.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{project.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{project.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{project.id}}'].value)"></td>
+                    <td><a href="tasks/{{project.id}}">Просмотр</a><br><br><a href="newTask/{{project.id}}">Добавить</a></td>
+                    <td><a href="editProject/{{project.id}}">Изменить</a><br><br><a href="deleteProject/{{project.id}}">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+                </div>
+             <span class="example1-pagination_link example1-pagination_link__active">
+            Страница {{ pageObj.number }} из {{ pageObj.paginator.num_pages }}.
+            </span>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for p in pageObj.paginator.page_range %}
+                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endfor %}
+            </ul>
+          </nav>
+            {% endif %}
+            </div>
+    </form>
+{% endif %}
+
+{% if tag == "Администратор" %}
+    <form method="POST" name="form1">
+        <div align="center" class="container-fluid">
+        {% if completedProjectsList.count == 0 %}
+            <br>
+            <h3>Завершенные проекты:</h3>
+            <br>
+            <h6>Завершенных проектов нет</h6>
+            {% endif %}
+        {% if completedProjectsList.count > 0 %}
+        <br>
+        <h3>Завершенные проекты:</h3>
+        <br>
+            <div class="table-responsive">
+            <table class="table-dark table-condensed table-responsive">
+                <thead>
+                <th>Название</th>
+                <th>Имя клиента</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>E-mail</th>
+                <th>Номер телефона</th>
+                <th>Статус</th>
+                <th>Ссылки</th>
+                <th>Комментарий</th>
+                <th>Сохранение</th>
+                <th>Задачи</th>
+                <th>Проект</th>
+                </thead>
+                {% for project in pageObj1 %}
+                {% if project.state == "Сдан"%}
+                <tr class="table-light" bgcolor="#2E8B57">
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.clientName }}</td>
+                    <td>{{ project.dateStart }}</td>
+                    <td>{{ project.dateEnd }}</td>
+                    <td>{{ project.email }}</td>
+                    <td>{{ project.number }}</td>
+                    <td><select name="state {{project.id}}">
+                        <option name ="state {{project.id}}" value="Принят">Принят</option>
+                        <option name ="state {{project.id}}" value="Приостановлен">Приостановлен</option>
+                        <option name ="state {{project.id}}" value="В работе">В работе</option>
+                        <option selected name ="state {{project.id}}" value="Сдан">Сдан</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{project.id}}">{{project.link}}</textarea></td>
+                    <td><textarea name="comment {{project.id}}">{{project.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/saveEditProject/{{project.id}}/'+ encodeURIComponent(document.forms['form1'].elements['comment {{project.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['link {{project.id}}'].value)  + '/' + encodeURIComponent(document.forms['form1'].elements['state {{project.id}}'].value)"></td>
+                    <td><a href="tasks/{{project.id}}">Просмотр</a><br><br><a href="newTask/{{project.id}}">Добавить</a></td>
+                    <td><a href="editProject/{{project.id}}">Изменить</a><br><br><a href="deleteProject/{{project.id}}">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% if project.state == "Приостановлен"%}
+                <tr class="table-light" bgcolor="#FFE4B5">
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.clientName }}</td>
+                    <td>{{ project.dateStart }}</td>
+                    <td>{{ project.dateEnd }}</td>
+                    <td>{{ project.email }}</td>
+                    <td>{{ project.number }}</td>
+                    <td><select name="state {{project.id}}">
+                        <option name ="state {{project.id}}" value="Принят">Принят</option>
+                        <option selected name ="state {{project.id}}" value="Приостановлен">Приостановлен</option>
+                        <option name ="state {{project.id}}" value="В работе">В работе</option>
+                        <option name ="state {{project.id}}" value="Сдан">Сдан</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{project.id}}">{{project.link}}</textarea></td>
+                    <td><textarea name="comment {{project.id}}">{{project.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/saveEditProject/{{project.id}}/'+ encodeURIComponent(document.forms['form1'].elements['comment {{project.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['link {{project.id}}'].value)  + '/' + encodeURIComponent(document.forms['form1'].elements['state {{project.id}}'].value)"></td>
+                    <td><a href="tasks/{{project.id}}">Просмотр</a><br><br><a href="newTask/{{project.id}}">Добавить</a></td>
+                    <td><a href="editProject/{{project.id}}">Изменить</a><br><br><a href="deleteProject/{{project.id}}">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% if project.state == "Принят"%}
+                <tr class="table-light" bgcolor="#D3D3D3">
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.clientName }}</td>
+                    <td>{{ project.dateStart }}</td>
+                    <td>{{ project.dateEnd }}</td>
+                    <td>{{ project.email }}</td>
+                    <td>{{ project.number }}</td>
+                    <td><select name="state {{project.id}}">
+                        <option selected name ="state {{project.id}}" value="Принят">Принят</option>
+                        <option name ="state {{project.id}}" value="Приостановлен">Приостановлен</option>
+                        <option name ="state {{project.id}}" value="В работе">В работе</option>
+                        <option name ="state {{project.id}}" value="Сдан">Сдан</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{project.id}}">{{project.link}}</textarea></td>
+                    <td><textarea name="comment {{project.id}}">{{project.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/saveEditProject/{{project.id}}/'+ encodeURIComponent(document.forms['form1'].elements['comment {{project.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['link {{project.id}}'].value)  + '/' + encodeURIComponent(document.forms['form1'].elements['state {{project.id}}'].value)"></td>
+                    <td><a href="tasks/{{project.id}}">Просмотр</a><br><br><a href="newTask/{{project.id}}">Добавить</a></td>
+                    <td><a href="editProject/{{project.id}}">Изменить</a><br><br><a href="deleteProject/{{project.id}}">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% if project.state == "В работе"%}
+                <tr class="table-light" bgcolor="White">
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.clientName }}</td>
+                    <td>{{ project.dateStart }}</td>
+                    <td>{{ project.dateEnd }}</td>
+                    <td>{{ project.email }}</td>
+                    <td>{{ project.number }}</td>
+                    <td><select name="state {{project.id}}">
+                        <option name ="state {{project.id}}" value="Принят">Принят</option>
+                        <option name ="state {{project.id}}" value="Приостановлен">Приостановлен</option>
+                        <option selected name ="state {{project.id}}" value="В работе">В работе</option>
+                        <option name ="state {{project.id}}" value="Сдан">Сдан</option>
+                        </select>
+                    </td>
+                    <td><textarea name="link {{project.id}}">{{project.link}}</textarea></td>
+                    <td><textarea name="comment {{project.id}}">{{project.comment}}</textarea></td>
+                    <td><input type="button" value="Сохранить" onclick="location.href='/saveEditProject/{{project.id}}/'+ encodeURIComponent(document.forms['form1'].elements['comment {{project.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['link {{project.id}}'].value)  + '/' + encodeURIComponent(document.forms['form1'].elements['state {{project.id}}'].value)"></td>
+                    <td><a href="tasks/{{project.id}}">Просмотр</a><br><br><a href="newTask/{{project.id}}">Добавить</a></td>
+                    <td><a href="editProject/{{project.id}}">Изменить</a><br><br><a href="deleteProject/{{project.id}}">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+                </div>
+             <span class="example1-pagination_link example1-pagination_link__active">
+            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
+            </span>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% for p in pageObj1.paginator.page_range %}
+                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endfor %}
+            </ul>
+          </nav>
+            {% endif %}
+            </div>
+    </form>
+{% endif %}
+{% endblock content %}
