@@ -158,17 +158,21 @@ def validate_login(request):
 
 #АвторизацияИВыход
 def login(request):
-    if request.method == "POST":
-        login = request.POST.get("login")
-        password = request.POST.get("password")
-        userForSession = User.objects.get(login = login)
-        if (pbkdf2_sha256.verify(password, userForSession.password)):
-            request.session['name'] = userForSession.name
-            request.session['login'] = userForSession.login
-            request.session['tag'] = userForSession.tag
-        return HttpResponseRedirect("/")
-    else:
-        return render(request, "login.html", {"tag": request.session['tag'], "name": request.session['name'], "login": request.session['login']})
+    try:
+        if request.method == "POST":
+            login = request.POST.get("login")
+            password = request.POST.get("password")
+            userForSession = User.objects.get(login = login)
+            if (pbkdf2_sha256.verify(password, userForSession.password)):
+                request.session['name'] = userForSession.name
+                request.session['login'] = userForSession.login
+                request.session['tag'] = userForSession.tag
+            return HttpResponseRedirect("/")
+        else:
+            return render(request, "login.html", {"tag": request.session['tag'], "name": request.session['name'], "login": request.session['login']})
+    except User.DoesNotExist:
+        return HttpResponseNotFound("<h2>Введен неверный логин (такого пользователя не существует)</h2>")
+
 
 def logout(request):
     try:
