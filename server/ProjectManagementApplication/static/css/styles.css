@@ -1,41 +1,70 @@
     {% load static %}
+    body{
+    font-size: 14px;
+    }
+    h3 {
+    font-weight: 700;
+    font-size: 18px;
+    font-family: system-ui;
+    }
     h4 {
-    font-family: Tahoma;
+    font-family: system-ui;
     }
     h6 {
-    font-family: Tahoma;
+    font-weight: normal;
+    font-size: 14px;
+    font-family: system-ui;
     }
     A {
     color: #000000; /* Цвет текста */
-    font-family: Tahoma;
+    font-size: 14px;
+    font-family: system-ui;
     }
    #textarea_main {
-    background: #FFDAB9; /* Цвет фона */
+    background: #FFF0E2; /* Цвет фона */
     border: 2px solid #000000; /* Параметры рамки */
     width: 100%; /* Ширина */
-    height: 400px; /* Высота */
+    height: 320px; /* Высота */
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
     box-sizing: border-box; /* Алгоритм расчёта ширины */
     font-size: 14px; /* Размер шрифта */
-    font-family: Tahoma;
+    font-family: system-ui;
+    resize: none;
    }
    #textarea_main_user {
+    background: #FFF0E2; /* Цвет фона */
+    border: 2px solid #000000; /* Параметры рамки */
+    width: 100%; /* Ширина */
+    height: 320px; /* Высота */
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    box-sizing: border-box; /* Алгоритм расчёта ширины */
+    font-size: 14px; /* Размер шрифта */
+    font-family: system-ui;
+    resize: none;
+   }
+   #textarea_message {
     background: #FFDAB9; /* Цвет фона */
     border: 2px solid #000000; /* Параметры рамки */
     width: 100%; /* Ширина */
-    height: 400px; /* Высота */
+    height: 320px; /* Высота */
     box-sizing: border-box; /* Алгоритм расчёта ширины */
     font-size: 14px; /* Размер шрифта */
-    font-family: Tahoma;
+    font-family: system-ui;
    }
     TABLE {
     border-collapse: collapse; /* Убираем двойные линии между ячейками */
     width: 90%; /* Ширина таблицы */
     font-size: 14px; /* Размер шрифта */
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
    }
    TH, TD {
     border: 1.5px solid black; /* Параметры рамки */
     text-align: center; /* Выравнивание по центру */
-    padding: 0px; /* Поля вокруг текста */
     font-size: 14px; /* Размер шрифта */
    }
    TH {
@@ -43,13 +72,19 @@
     height: 30px; /* Высота ячеек */
     padding: 0; /* Убираем поля вокруг текста */
     font-size: 14px; /* Размер шрифта */
+    border: 0px solid black; /* Параметры рамки */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding-right: 5px;
+    padding-left: 5px;
    }
    hr {
     background-color: black; /* Цвет линии */
     color: #000000; /* Цвет линии для IE6-7 */
-    height: 5px; /* Толщина линии */
+    height: 2px; /* Толщина линии */
    }
-    .box_block {
+
+.box_block {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
@@ -66,3 +101,77 @@
   width: 1150px;
   background: #c0ffee;
 }
+
+.column {
+  background-color: white;
+  width: var(--column-width);
+  margin-right: 5px;
+  padding: 5px;
+}
+
+.board-column-header {
+  width: var(--column-width);
+  border: 1px solid #000000;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  -moz-user-select: none;
+  background-color: #212529;
+  color: #ffffff;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  font-size: 18px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.board-item1 {
+  font-size: 14px;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  padding: 5px;
+  margin-bottom: 0.5em;
+  width: var(--item-width);
+  height: var(--item-height);
+}
+
+.board-item2 {
+  font-size: 14px;
+  background-color: #0990df66;
+  border: 1px solid #000000;
+  padding: 5px;
+  margin-bottom: 0.5em;
+  width: var(--item-width);
+  height: var(--item-height);
+}
+
+.board-item3 {
+  font-size: 14px;
+  background-color: #AE88DD;
+  border: 1px solid #000000;
+  padding: 5px;
+  margin-bottom: 0.5em;
+  width: var(--item-width);
+  height: var(--item-height);
+}
+
+.board-item4 {
+  font-size: 14px;
+  background-color: #C2DFDB;
+  border: 1px solid #000000;
+  padding: 5px;
+  margin-bottom: 0.5em;
+  width: var(--item-width);
+  height: var(--item-height);
+}
+
+.board-item5 {
+  font-size: 14px;
+  background-color: #FFDF6FA3;
+  border: 1px solid #000000;
+  padding: 5px;
+  margin-bottom: 0.5em;
+  width: var(--item-width);
+  height: var(--item-height);
+}
+
+

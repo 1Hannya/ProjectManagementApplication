@@ -14,45 +14,34 @@
 <h3 align="center">Список пользователей</h3>
 <table align="center" class="table-dark">
     <thead>
-    <th>Логин</th>
     <th>Ф.И.О</th>
     <th>Номер телефона</th>
+    <th>E-mail</th>
+    <th>Дата рождения</th>
     <th>Тег</th>
     <th>Удалить пользователя</th>
     </thead>
-    {% for usersList in pageObj %}
+    {% for user in pageObj %}
     <tr class="table-light">
-        <td>{{ usersList.login }}</td>
-        <td>{{ usersList.name }}</td>
-        <td>{{ usersList.number }}</td>
-        <td><select name ="tag {{usersList.id}}">
+        <td>{{ user.name }}</td>
+        <td>{{ user.number }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.birthday }}</td>
+        <td><select name ="tag {{user.id}}" onchange="location.href='/saveEdit/{{user.id}}/'+document.forms['form'].elements['tag {{user.id}}'].value">
             {% for i in tagList %}
-            {% if i.name == usersList.tag %}
-                <option selected name ="tag {{usersList.id}}" value={{i.name}}>{{ i.name }}</option>
+            {% if i.name == user.tag %}
+                <option selected name ="tag {{user.id}}" value={{i.name}}>{{ i.name }}</option>
             {% endif %}
-            {% if i.name != usersList.tag %}
-                <option name ="tag {{usersList.id}}" value={{i.name}}>{{ i.name }}</option>
+            {% if i.name != user.tag %}
+                <option name ="tag {{user.id}}" value={{i.name}}>{{ i.name }}</option>
             {% endif %}
 
             {% endfor %}
             </select>
-            <input type="button" value="Сохранить" onclick="location.href='/saveEdit/{{usersList.id}}/'+document.forms['form'].elements['tag {{usersList.id}}'].value"></td>
-        <td><a href="/delete/{{usersList.id}}/">Удалить</a></td>
+        <td><a href="/delete/{{user.id}}/">Удалить</a></td>
     </tr>
     {% endfor %}
 </table>
-    <div class="container-fluid">
-        <span class="example1-pagination_link example1-pagination_link__active">
-            Страница {{ pageObj.number }} из {{ pageObj.paginator.num_pages }}.
-            </span>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                {% for p in pageObj.paginator.page_range %}
-                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                {% endfor %}
-            </ul>
-          </nav>
-    </div>
 {% endif %}
 </form>
 {% endif %}
@@ -64,32 +53,22 @@
 <h3 align="center">Список пользователей</h3>
 <table align="center" class="table-dark">
     <thead>
-    <th>Логин</th>
     <th>Ф.И.О</th>
     <th>Номер телефона</th>
+    <th>E-mail</th>
+    <th>Дата рождения</th>
     <th>Тег</th>
     </thead>
-    {% for usersList in pageObj %}
+    {% for user in pageObj %}
     <tr class="table-light">
-        <td>{{ usersList.login }}</td>
-        <td>{{ usersList.name }}</td>
-        <td>{{ usersList.number }}</td>
-        <td>{{ usersList.tag }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.number }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.birthday }}</td>
+        <td>{{ user.tag }}</td>
     </tr>
     {% endfor %}
 </table>
-    <div class="container-fluid">
-        <span class="example1-pagination_link example1-pagination_link__active">
-            Страница {{ pageObj.number }} из {{ pageObj.paginator.num_pages }}.
-            </span>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                {% for p in pageObj.paginator.page_range %}
-                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                {% endfor %}
-            </ul>
-          </nav>
-    </div>
 {% endif %}
 
 </form>

@@ -1,0 +1,311 @@
+{% extends "baseForm.html" %}
+{% block title %}ManagementPro - Страница задачи{% endblock title %}
+
+{% block content %}
+
+{% if tag == "guest"%}
+<h1>У вас нет доступа к этой странице</h1>
+{% endif %}
+
+{% if tag == "Администратор"%}
+<form method="POST" name="form">
+        {% csrf_token %}
+    <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl">
+                    <div align="center">
+                    <h3>Информация</h3>
+                    </div>
+                    <table  class="table">
+                      <tbody>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label style="font-size: 14px">Задача:</label></th>
+                          <td style="border: 0px;"><input name ="title {{task.id}}" onchange="location.href='/inTaskEditTitle/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['title {{task.id}}'].value)" style="width: 100%;" value="{{ task.title }}"></input></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Описание:</label></th>
+                          <td style="border: 0px;"><textarea name="comment {{task.id}}" onchange="location.href='/inTaskEditComment/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{task.id}}'].value)">{{task.description}}</textarea></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Проект:</label></th>
+                          <td style="border: 0px;"><label>{{ task.titleProject }}</label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Исполнитель:</label></th>
+                          <td style="border: 0px;">
+                            <select name ="executor {{task.id}}" style="width: 100%;" onchange="location.href='/inTaskEditExecutor/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['executor {{task.id}}'].value)">
+                            {% for i in userList %}
+                            {% if i.name == task.executorName %}
+                                <option selected name ="executor {{task.id}}" value={{i.id}}>{{ i.name }}</option>
+                            {% endif %}
+                            {% if i.name != task.executorName %}
+                                <option name ="executor {{task.id}}" value={{i.id}}>{{ i.name }}</option>
+                            {% endif %}
+                            {% endfor %}
+                            </select>
+                            </td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Ответственный:</label></th>
+                          <td style="border: 0px;"><label>{{ task.responsibleName }} </label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Дата начала:</label></th>
+                          <td style="border: 0px;"><label>{{ task.dateStart }} </label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Дата окончания:</label></th>
+                          <td style="border: 0px;"><input name="dateEnd {{task.id}}" onchange="location.href='/inTaskEditDateEnd/{{task.id}}/'+  encodeURIComponent(document.forms['form'].elements['dateEnd {{task.id}}'].value)" style="width: 100%;" value="{{ task.dateEnd }}"></input></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Ссылки:</label></th>
+                          <td style="border: 0px;"><textarea name="link {{task.id}}" onchange="location.href='/inTaskEditLink/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['link {{task.id}}'].value)">{{task.link}}</textarea></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Статус:</label></th>
+                          <td style="border: 0px;">
+                              {% if task.state == "Принята"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option selected name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                              {% if task.state == "В работе"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option selected name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                              {% if task.state == "Приостановлена"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option selected name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                              {% if task.state == "Сопровождение"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option selected name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                              {% if task.state == "Сделана"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option selected name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+
+                <div class="col-1">
+
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl">
+                    <div align="center">
+                    <h3>Обсуждение задачи</h3>
+                    </div>
+                    {% csrf_token %}
+                    <div id="chat1" class="chat">
+                        {% for message in messagesChat %}
+                            {% if message.userName != name %}
+                        <div class="column">
+                            <div class="message-executor" style="padding: 0px 0px 0px 10px">{{ message.userName }} | {{ message.date }}</div>
+                                  <div class="message-item">
+                                        <p style="padding: 0px 0px 0px 10px">{{ message.messageText }}</p>
+                                  </div>
+                        </div>
+                            {% endif %}
+                            {% if message.userName == name %}
+                            <div class="column">
+                                    <div class="message-user" style="padding: 0px 0px 0px 10px">Вы | {{ message.date }}</div>
+                                          <div class="message-item">
+                                                <p style="padding: 0px 0px 0px 10px">{{ message.messageText }}</p>
+                                          </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-8">
+                            <br>
+                            <textarea class="textarea-message" placeholder="Напишите сообщение..." name="message"></textarea>
+                        </div>
+                        <div class="col-2">
+                            <br>
+                            <input type="button" class="h-40 btn btn-dark" value="Отправить" onclick="location.href='/saveMessage/{{task.id}}/{{idUser}}/'+document.forms['form'].elements['message'].value">
+                        </div>
+                        <div class="col-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endif %}
+
+{% if tag != "Администратор" and tag != "guest" %}
+    <form method="POST" name="form">
+        {% csrf_token %}
+    <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl">
+                    <div align="center">
+                    <h3>Информация</h3>
+                    </div>
+                    <table  class="table">
+                      <tbody>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Название задачи:</label></th>
+                          <td style="border: 0px;"><label>{{ task.title }} </label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Описание:</label></th>
+                          <td style="border: 0px;"><label>{{task.description}}</label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Проект:</label></th>
+                          <td style="border: 0px;"><label>{{ task.titleProject }} </label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Исполнитель:</label></th>
+                          <td style="border: 0px;"><label>{{ task.executorName }} </label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Ответственный:</label></th>
+                          <td style="border: 0px;"><label>{{ task.responsibleName }} </label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Дата начала:</label></th>
+                          <td style="border: 0px;"><label>{{ task.dateStart }} </label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Дата окончания:</label></th>
+                          <td style="border: 0px;"><label>{{ task.dateEnd }} </label></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Ссылки:</label></th>
+                          <td style="border: 0px;"><textarea name="link {{task.id}}" onchange="location.href='/inTaskEditLink/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['link {{task.id}}'].value)">{{task.link}}</textarea></td>
+                        </tr>
+                        <tr>
+                          <th style="border: 0px; text-align: left;"><label>Статус:</label></th>
+                          <td style="border: 0px;">
+                              {% if task.state == "Принята"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option selected name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                              {% if task.state == "В работе"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option selected name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                              {% if task.state == "Приостановлена"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option selected name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                              {% if task.state == "Сопровождение"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option selected name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                              {% if task.state == "Сделана"%}
+                              <select style="width: 100%" name="state {{task.id}}" onchange="location.href='/inTaskEditState/{{task.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{task.id}}'].value)">
+                                <option name ="state {{task.id}}" value="Принята">Принята</option>
+                                <option name ="state {{task.id}}" value="В работе">В работе</option>
+                                <option name ="state {{task.id}}" value="Приостановлена">Приостановлена</option>
+                                <option name ="state {{task.id}}" value="Сопровождение">Сопровождение</option>
+                                <option selected name ="state {{task.id}}" value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl">
+                    <div align="center">
+                    <h3>Обсуждение задачи</h3>
+                    </div>
+                    {% csrf_token %}
+                    <div id="chat2" class="chat">
+                        {% for message in messagesChat %}
+                            {% if message.userName != name %}
+                        <div class="column">
+                            <div class="message-executor" style="padding: 0px 0px 0px 10px">{{ message.userName }} | {{ message.date }}</div>
+                                  <div class="message-item">
+                                        <p style="padding: 0px 0px 0px 10px">{{ message.messageText }}</p>
+                                  </div>
+                        </div>
+                            {% endif %}
+                            {% if message.userName == name %}
+                            <div class="column">
+                                    <div class="message-user" style="padding: 0px 0px 0px 10px">Вы | {{ message.date }}</div>
+                                          <div class="message-item">
+                                                <p style="padding: 0px 0px 0px 10px">{{ message.messageText }}</p>
+                                          </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+
+                        </div>
+                        <div class="col-8">
+                            <br>
+                            <textarea placeholder="Напишите сообщение..." name="message"></textarea>
+                        </div>
+                        <div class="col-1">
+                            <br>
+                            <input type="button" class="h-40 btn btn-dark" value="Отправить" onclick="location.href='/saveMessage/{{task.id}}/{{idUser}}/'+document.forms['form'].elements['message'].value">
+                        </div>
+                        <div class="col-2">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endif %}
+{% endblock content %}

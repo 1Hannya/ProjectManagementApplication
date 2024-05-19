@@ -14,17 +14,22 @@
     <form method="POST" action="{% url 'registration' %}" class="form">
         {% csrf_token %}
         <br>
-        <div align="center" class="container-fluid">
+        <div align="center" class="container">
             <h3>Чтобы зарегистрировать нового пользователя, необходимо заполнить данные указанные ниже</h3>
-        </div>
-
-        <div align="center" class="container"><br>
-        <table>
-            {{ form }}
+        <br>
+        <table align="center">
+          <tbody>
+          {% for field in form %}
+            <tr>
+              <td style="font-size: 16px"><b>{{field.label_tag}}</b></td>
+              <td>{{field}}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
         </table>
         <br>
-        <input type="submit" class="w-60 btn btn-lg btn-dark" value="Зарегистрироваться" >
-            </div>
+        <input type="submit" class="btn btn-dark" value="Зарегистрироваться" >
+        </div>
     </form>
 {% endif %}
 {% endblock content %}

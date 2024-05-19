@@ -11,69 +11,294 @@
 {% endif %}
 <section>
 {% if tag == "Администратор" %}
+    <br>
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col">
+    <div class="col-12 col-sm-12 col-md-4">
       <form method="POST">
         {% csrf_token %}
-    <p>
-        <h3>Блокнот:</h3>
-        <textarea id="textarea_main" name="comment">{{comment}}</textarea></p>
-    </p>
-        <input align="left" class="w-60 btn btn-dark" type="submit" value="Сохранить" >
+        <p>
+            <h3>Блокнот:</h3>
+            <textarea id="textarea_main" name="note">{{note}}</textarea>
+        </p>
+        <input align="left" class="btn btn-dark" type="submit" value="Сохранить">
       </form>
     </div>
-    <div class="col">
+
+    <div class="col-12 col-sm-12 col-md-5">
+      <p>
       <form method="POST">
-          <br>
           <h3>Напоминания по задачам:</h3>
-            {% if upcomingTasks.count > 0%}
+            <h6>(Задачи которые нужно выполнить сегодня)</h6>
+            {% if upcomingTasksList.count > 0%}
             <div class="table-responsive">
             <table class="table-dark table-responsive">
                 <thead>
                 <th>Задача</th>
-                <th>Дата начала</th>
-                <th>Дата окончания</th>
                 <th>Назначил</th>
-                <th>Название проекта</th>
+                <th>Дата<br>окончания</th>
                 <th>Статус</th>
                 </thead>
-                {% for upcomingTasks in pageObj1 %}
+                {% for upcomingTasks in upcomingTasksList %}
                 <tr class="table-light">
-                    <td>{{ upcomingTasks.title }}</td>
-                    <td>{{ upcomingTasks.dateStart }}</td>
-                    <td>{{ upcomingTasks.dateEnd }}</td>
-                    <td>{{ upcomingTasks.responsible }}</td>
-                    <td>{{ upcomingTasks.titleProject }}</td>
-                    <td>{{ upcomingTasks.state }}</td>
+                    <td style="cursor: pointer;" data-href="task/{{upcomingTasks.id}}/">{{ upcomingTasks.title }}</td>
+                    <td style="cursor: pointer;" data-href="task/{{upcomingTasks.id}}/">{{ upcomingTasks.responsibleName }}</td>
+                    <td style="cursor: pointer;" data-href="task/{{upcomingTasks.id}}/">{{ upcomingTasks.dateEnd }}</td>
+                    <td style="cursor: pointer;" data-href="task/{{upcomingTasks.id}}/">{{ upcomingTasks.state }}</td>
                 </tr>
                 {% endfor %}
             </table>
             </div>
+          <div align="center">
             <span class="example1-pagination_link example1-pagination_link__active">
-            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
+            {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}
             </span>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                {% for p in pageObj1.paginator.page_range %}
-                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                {% endfor %}
-            </ul>
-          </nav>
-
+            <nav>
+                <ul class="pagination">
+                    {% for p in pageObj1.paginator.page_range %}
+                        <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+          </div>
           {% endif %}
-          {% if upcomingTasks.count == 0 %}
-          <p>Приближающихся заданий пока нет</p>
+          {% if upcomingTasksList.count == 0 %}
+          <h6>Приближающихся заданий пока нет</h6>
           {% endif %}
- </form>
+      </form>
+      </p>
     </div>
+
+    <div class="col-12 col-sm-12 col-md-3">
+        <p>
+            <table style="width: 80%" class="table">
+              <tbody>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><h3>Ваши задачи:</h3></th>
+                  <td style="border: 0px;">{{taskCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Принята":</label></th>
+                  <td style="border: 0px;">{{taskAcceptedCount}}/{{taskCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "В работе":</label></th>
+                  <td style="border: 0px;">{{taskInWorkCount}}/{{taskCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Сделана":</label></th>
+                  <td style="border: 0px;">{{taskCompletedCount}}/{{taskCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Приостановлена":</label></th>
+                  <td style="border: 0px;">{{taskStopedCount}}/{{taskCount}}</td>
+                </tr>
+              <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Сопровождение":</label></th>
+                  <td style="border: 0px;">{{taskAccompanimentCount}}/{{taskCount}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </p>
+    </div>
+
+
   </div>
 </div>
     </section>
 <br>
+
+{% if visual == 0%}
 <section>
 <div align="center">
     <h3>Задачи</h3>
+    <a href="editVisual0/">Доска</a> / <a href="editVisual1/">Таблица</a>
+    <br>
+    <div class="container-fluid">
+          <form method="POST" name="form">
+              <div class="row justify-content-center">
+                        <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">Принята</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListAccepted.count == 0%}
+                                <div class="board-item1">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListAccepted %}
+                              <div class="board-item1">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                          </div>
+                         </div>
+
+                        <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">В работе</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListInWork.count == 0%}
+                                <div class="board-item2">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListInWork %}
+                              <div class="board-item2">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option selected name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">Приостановлена</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListStoped.count == 0%}
+                                <div class="board-item5">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListStoped %}
+                              <div class="board-item5">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+                          </div>
+
+                  <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">Сопровождение</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListAccompaniment.count == 0%}
+                                <div class="board-item3">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListAccompaniment %}
+                              <div class="board-item3">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option selected name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+                          </div>
+
+                        <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">Сделана</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListCompleted.count == 0%}
+                                <div class="board-item4">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListCompleted %}
+                              <div class="board-item4">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option selected name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+                          </div>
+                </div>
+          </form>
+    </div>
+</div>
+</section>
+{% endif %}
+
+{% if visual == 1%}
+<section>
+<div align="center">
+    <h3>Задачи</h3>
+    <a href="editVisual0/">Доска</a> / <a  href="editVisual1/">Таблица</a>
+    <br>
 </div>
 <div align="center" class="container-fluid">
       <form method="POST" name="form">
@@ -84,28 +309,66 @@
           <div class="table-responsive">
             <table class="table-dark table-condensed table-responsive">
                 <thead>
-                <th>Задача</th>
+                <th>Задача<br> (нажмите чтобы открыть)</th>
+                <th>Описание</th>
                 <th>Исполнитель</th>
-                <th>Дата начала</th>
-                <th>Дата окончания</th>
+                <th>Дата<br>начала</th>
+                <th>Дата<br>окончания</th>
                 <th>Назначил</th>
-                <th>Название проекта</th>
-                <th>Статус</th>
+                <th>Название<br>проекта</th>
                 <th>Ссылки</th>
-                <th>Комментарий</th>
-                <th>Сохранить</th>
-                <th>Действия</th>
+                <th>Статус</th>
                 </thead>
+                <tr class="table-light" bgcolor="#ffffff">
+                    <td style="color: #000000" colspan="11"><b>Приняты</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Принята"%}
+                <tr class="table-light" bgcolor="#ffffff">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}">{{ tasks.title }}</td>
+                    <td><textarea name="comment {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+            {% for i in userList %}
+            {% if i.name == tasks.executorName %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executorName %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+            </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                        <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr style="background-color:#0990df66" class="table-light">
+                    <td style="color: #000000" colspan="11"><b>В работе</b></td>
+                </tr>
                 {% for tasks in pageObj %}
                 {% if tasks.state == "В работе"%}
-                <tr class="table-light" bgcolor="White">
-                    <td>{{ tasks.title }}</td>
-                    <td><select name ="executor {{tasks.id}}">
+                <tr style="background-color:#0990df66" class="table-light">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}">{{ tasks.title }}</td>
+                    <td><textarea name="comment {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
             {% for i in userList %}
-            {% if i.name == tasks.executor %}
+            {% if i.name == tasks.executorName %}
                 <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
             {% endif %}
-            {% if i.name != tasks.executor %}
+            {% if i.name != tasks.executorName %}
                 <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
             {% endif %}
             {% endfor %}
@@ -113,324 +376,573 @@
                     </td>
                     <td>{{ tasks.dateStart }}</td>
                     <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
                     <td>{{ tasks.titleProject }}</td>
-                    <td><select name="state {{tasks.id}}">
+                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
                         <option name ="state {{tasks.id}}" value="Принята">Принята</option>
-                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
                         <option selected name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
-                        </select>
-                    </td>
-                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
-                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
-                    <td><input type="button" value="Сохранить" onclick="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)"></td>
-                    <td><a href="editTaskMain/{{tasks.id}}">Изменить</a><br><br><a href="deleteTaskMain/{{tasks.id}}/">Удалить</a></td>
-                </tr>
-                {% endif %}
-
-
-                {% if tasks.state == "Приостановлена"%}
-                <tr class="table-light" bgcolor="#FFE4B5">
-                    <td>{{ tasks.title }}</td>
-                    <td><select name ="executor {{tasks.id}}">
-            {% for i in userList %}
-            {% if i.name == tasks.executor %}
-                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
-            {% endif %}
-            {% if i.name != tasks.executor %}
-                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
-            {% endif %}
-            {% endfor %}
-            </select>
-            </td>
-                    <td>{{ tasks.dateStart }}</td>
-                    <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsible }}</td>
-                    <td>{{ tasks.titleProject }}</td>
-                    <td><select name="state {{tasks.id}}">
-                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
-                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
-                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
-                        </select>
-                    </td>
-                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
-                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
-                    <td><input type="button" value="Сохранить" onclick="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)"></td>
-                    <td><a href="editTaskMain/{{tasks.id}}">Изменить</a><br><br><a href="deleteTaskMain/{{tasks.id}}/">Удалить</a></td>
-
-                </tr>
-                {% endif %}
-
-                {% if tasks.state == "Сделана"%}
-                <tr class="table-light" bgcolor="#2E8B57">
-                    <td>{{ tasks.title }}</td>
-                    <td><select name ="executor {{tasks.id}}">
-            {% for i in userList %}
-            {% if i.name == tasks.executor %}
-                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
-            {% endif %}
-            {% if i.name != tasks.executor %}
-                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
-            {% endif %}
-            {% endfor %}
-            </select>
-            </td>
-                    <td>{{ tasks.dateStart }}</td>
-                    <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsible }}</td>
-                    <td>{{ tasks.titleProject }}</td>
-                    <td><select name="state {{tasks.id}}">
-                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
                         <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr class="table-light" bgcolor="#FFDF6FA3">
+                    <td style="color: #000000" colspan="11"><b>Приостановлены</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Приостановлена"%}
+                <tr class="table-light" bgcolor="#FFDF6FA3">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}">{{ tasks.title }}</td>
+                    <td><textarea name="comment {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+            {% for i in userList %}
+            {% if i.name == tasks.executorName %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executorName %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+            </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
                         <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr class="table-light" bgcolor="#AE88DD">
+                    <td style="color: #000000" colspan="11"><b>Сопровождение</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Сопровождение"%}
+                <tr class="table-light" bgcolor="#AE88DD">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}">{{ tasks.title }}</td>
+                    <td><textarea name="comment {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+            {% for i in userList %}
+            {% if i.name == tasks.executorName %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executorName %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+            </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option selected name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr style="background-color:#C2DFDB" class="table-light">
+                    <td style="color: #000000" colspan="11"><b>Сделаны</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Сделана"%}
+                <tr style="background-color:#C2DFDB" class="table-light">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}">{{ tasks.title }}</td>
+                    <td><textarea name="comment {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+            {% for i in userList %}
+            {% if i.name == tasks.executorName %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executorName %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+            </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
                         <option selected name ="state {{tasks.id}}" value="Сделана">Сделана</option>
                         </select>
                     </td>
-                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
-                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
-                    <td><input type="button" value="Сохранить" onclick="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)"></td>
-                    <td><a href="editTaskMain/{{tasks.id}}">Изменить</a><br><br><a href="deleteTaskMain/{{tasks.id}}/">Удалить</a></td>
-                </tr>
-                {% endif %}
-
-                {% if tasks.state == "Принята"%}
-                <tr class="table-light" bgcolor="#D3D3D3">
-                    <td>{{ tasks.title }}</td>
-                    <td><select name ="executor {{tasks.id}}">
-            {% for i in userList %}
-            {% if i.name == tasks.executor %}
-                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
-            {% endif %}
-            {% if i.name != tasks.executor %}
-                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
-            {% endif %}
-            {% endfor %}
-            </select>
-            </td>
-                    <td>{{ tasks.dateStart }}</td>
-                    <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsible }}</td>
-                    <td>{{ tasks.titleProject }}</td>
-                    <td><select name="state {{tasks.id}}">
-                        <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
-                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
-                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
-                        </select>
-                    </td>
-                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
-                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
-                    <td><input type="button" value="Сохранить" onclick="location.href='/mainSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)"></td>
-                    <td><a href="editTaskMain/{{tasks.id}}">Изменить</a><br><br><a href="deleteTaskMain/{{tasks.id}}/">Удалить</a></td>
-
                 </tr>
                 {% endif %}
                 {% endfor %}
             </table>
           </div>
             {% endif %}
-          <span class="example1-pagination_link example1-pagination_link__active">
-            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
-            </span>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                {% for p in pageObj.paginator.page_range %}
-                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                {% endfor %}
-            </ul>
-          </nav>
  </form>
 </div>
 {% endif %}
 </section>
-
-
+{% endif %}
 
 {% if tag != "Администратор" and tag != "guest" %}
+<br>
 <div class="container">
-  <div class="row">
-    <div class="col-sm">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-12 col-md-4">
       <form method="POST">
         {% csrf_token %}
-    <p>
-        <h3>Блокнот:</h3>
-        <textarea id="textarea_main_user" name="comment">{{comment}}</textarea></p>
-    </p>
-        <input class="w-60 btn btn-dark" type="submit" value="Сохранить" >
+        <p>
+            <h3>Блокнот:</h3>
+            <textarea id="textarea_main_user" name="note">{{note}}</textarea>
+        </p>
+        <input align="left" class="btn btn-dark" type="submit" value="Сохранить">
       </form>
     </div>
-    <div class="col-sm">
+
+    <div class="col-12 col-sm-12 col-md-5">
+      <p>
       <form method="POST">
-          <br>
           <h3>Напоминания по задачам:</h3>
-            {% if upcomingTasks.count > 0%}
+            <h6>(Задачи которые нужно выполнить сегодня)</h6>
+            {% if upcomingTasksList.count > 0%}
             <div class="table-responsive">
             <table class="table-dark table-responsive">
                 <thead>
                 <th>Задача</th>
-                <th>Дата начала</th>
-                <th>Дата окончания</th>
                 <th>Назначил</th>
-                <th>Название проекта</th>
+                <th>Дата<br>окончания</th>
                 <th>Статус</th>
                 </thead>
-                {% for upcomingTasks in pageObj1 %}
+                {% for upcomingTasks in upcomingTasksList %}
                 <tr class="table-light">
-                    <td>{{ upcomingTasks.title }}</td>
-                    <td>{{ upcomingTasks.dateStart }}</td>
-                    <td>{{ upcomingTasks.dateEnd }}</td>
-                    <td>{{ upcomingTasks.responsible }}</td>
-                    <td>{{ upcomingTasks.titleProject }}</td>
-                    <td>{{ upcomingTasks.state }}</td>
+                    <td style="cursor: pointer;" data-href="task/{{upcomingTasks.id}}/">{{ upcomingTasks.title }}</td>
+                    <td style="cursor: pointer;" data-href="task/{{upcomingTasks.id}}/">{{ upcomingTasks.responsibleName }}</td>
+                    <td style="cursor: pointer;" data-href="task/{{upcomingTasks.id}}/">{{ upcomingTasks.dateEnd }}</td>
+                    <td style="cursor: pointer;" data-href="task/{{upcomingTasks.id}}/">{{ upcomingTasks.state }}</td>
                 </tr>
                 {% endfor %}
             </table>
             </div>
+          <div align="center">
             <span class="example1-pagination_link example1-pagination_link__active">
-            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
+            {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}
             </span>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                {% for p in pageObj1.paginator.page_range %}
-                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                {% endfor %}
-            </ul>
-          </nav>
-
+            <nav>
+                <ul class="pagination">
+                    {% for p in pageObj1.paginator.page_range %}
+                        <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+          </div>
           {% endif %}
-          {% if upcomingTasks.count == 0 %}
-          <p>Приближающихся заданий пока нет</p>
+          {% if upcomingTasksList.count == 0 %}
+          <h6>Приближающихся заданий пока нет</h6>
           {% endif %}
- </form>
+      </form>
+      </p>
     </div>
+
+    <div class="col-12 col-sm-12 col-md-3">
+        <p>
+            <table style="width: 80%" class="table">
+              <tbody>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><h3>Ваши задачи:</h3></th>
+                  <td style="border: 0px;">{{taskCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Принята":</label></th>
+                  <td style="border: 0px;">{{taskAcceptedCount}}/{{taskCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "В работе":</label></th>
+                  <td style="border: 0px;">{{taskInWorkCount}}/{{taskCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Сделана":</label></th>
+                  <td style="border: 0px;">{{taskCompletedCount}}/{{taskCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Приостановлена":</label></th>
+                  <td style="border: 0px;">{{taskStopedCount}}/{{taskCount}}</td>
+                </tr>
+              <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Сопровождение":</label></th>
+                  <td style="border: 0px;">{{taskAccompanimentCount}}/{{taskCount}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </p>
+    </div>
+
+
   </div>
 </div>
     </section>
+<br>
 
+{% if visual == 0%}
 <section>
 <div align="center">
     <h3>Задачи</h3>
+    <a href="editVisual0/">Доска</a> / <a href="editVisual1/">Таблица</a>
+    <div class="container-fluid">
+          <form method="POST" name="form">
+              <div class="row justify-content-center">
+                        <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">Принята</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListAccepted.count == 0%}
+                                <div class="board-item1">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListAccepted %}
+                              <div class="board-item1">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                          </div>
+                         </div>
+
+                        <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">В работе</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListInWork.count == 0%}
+                                <div class="board-item2">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListInWork %}
+                              <div class="board-item2">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option selected name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">Приостановлена</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListStoped.count == 0%}
+                                <div class="board-item5">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListStoped %}
+                              <div class="board-item5">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+                          </div>
+
+                  <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">Сопровождение</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListAccompaniment.count == 0%}
+                                <div class="board-item3">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListAccompaniment %}
+                              <div class="board-item3">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option selected name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+                          </div>
+
+                        <div class="col">
+                          <div class="column">
+                            <div class="board-column-header">Сделана</div>
+                            <div class="board-column-content-wrapper">
+                                {% if taskListCompleted.count == 0%}
+                                <div class="board-item4">
+                                    <div>
+                                        <p>Задач с данным статусом нет</p>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                                {% for tasks in taskListCompleted %}
+                              <div class="board-item4">
+                                <div>
+                                    <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                    <p>Проект: {{ tasks.titleProject }}</p>
+                                    <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
+                                    <p>Статус:
+                                    <select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                                        <option selected name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                                    </select>
+                                    </p>
+                                    <input type="button" value="Подробнее" onclick="location.href='task/{{tasks.id}}/'">
+                                </div>
+                              </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+                          </div>
+                </div>
+          </form>
+    </div>
 </div>
-<div align="center" class="container">
+</section>
+{% endif %}
+
+{% if visual == 1%}
+<section>
+<div align="center">
+    <h3>Задачи</h3>
+    <a href="editVisual0/">Доска</a> / <a href="editVisual1/">Таблица</a>
+</div>
+<div align="center" class="container-fluid">
       <form method="POST" name="form">
+          {% if tasks.count == 0 %}
+          <p align="center">У вас пока нет задач</p>
+          {% endif %}
             {% if tasks.count > 0%}
-            <div class="table-responsive">
-            <table class="table-dark table-responsive">
+          <div class="table-responsive">
+            <table class="table-dark table-condensed table-responsive">
                 <thead>
-                <th>Задача</th>
-                <th>Исполнитель</th>
+                <th>Задача<br> (нажмите чтобы открыть)</th>
+                <th>Описание</th>
                 <th>Дата начала</th>
                 <th>Дата окончания</th>
                 <th>Назначил</th>
                 <th>Название проекта</th>
-                <th>Статус</th>
                 <th>Ссылки</th>
-                <th>Комментарий</th>
-                <th>Сохранить</th>
+                <th>Статус</th>
                 </thead>
+                <tr class="table-light" bgcolor="#ffffff">
+                    <td style="color: #000000" colspan="11"><b>Приняты</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Принята"%}
+                <tr class="table-light" bgcolor="#ffffff">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}/">{{ tasks.title }}</td>
+                    <td>{{tasks.description}}</td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td>{{ tasks.link }}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                        <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr style="background-color:#0990df66" class="table-light">
+                    <td style="color: #000000" colspan="11"><b>В работе</b></td>
+                </tr>
                 {% for tasks in pageObj %}
                 {% if tasks.state == "В работе"%}
-                <tr class="table-light" bgcolor="White">
-                    <td>{{ tasks.title }}</td>
-                    <td>{{ tasks.executor }}</td>
+                <tr style="background-color:#0990df66" class="table-light">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}/">{{ tasks.title }}</td>
+                    <td>{{tasks.description}}</td>
                     <td>{{ tasks.dateStart }}</td>
                     <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsible }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
                     <td>{{ tasks.titleProject }}</td>
-                    <td><select name="state {{tasks.id}}">
+                    <td>{{ tasks.link }}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
                         <option name ="state {{tasks.id}}" value="Принята">Принята</option>
-                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
                         <option selected name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
-                        </select>
-                    </td>
-                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
-                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
-                    <td><input type="button" value="Сохранить" onclick="location.href='/mainUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)"></td>
-                </tr>
-                {% endif %}
-
-
-                {% if tasks.state == "Приостановлена"%}
-                <tr class="table-light" bgcolor="#FFE4B5">
-                    <td>{{ tasks.title }}</td>
-                    <td>{{ tasks.executor }}</td>
-                    <td>{{ tasks.dateStart }}</td>
-                    <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsible }}</td>
-                    <td>{{ tasks.titleProject }}</td>
-                    <td><select name="state {{tasks.id}}">
-                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
-                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
-                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
-                        </select>
-                    </td>
-                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
-                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
-                    <td><input type="button" value="Сохранить" onclick="location.href='/mainUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)"></td>
-                </tr>
-                {% endif %}
-
-                {% if tasks.state == "Сделана"%}
-                <tr class="table-light" bgcolor="#2E8B57">
-                    <td>{{ tasks.title }}</td>
-                    <td>{{ tasks.executor }}</td>
-                    <td>{{ tasks.dateStart }}</td>
-                    <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsible }}</td>
-                    <td>{{ tasks.titleProject }}</td>
-                    <td><select name="state {{tasks.id}}">
-                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
                         <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr class="table-light" bgcolor="#FFDF6FA3">
+                    <td style="color: #000000" colspan="11"><b>Приостановлены</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Приостановлена"%}
+                <tr class="table-light" bgcolor="#FFDF6FA3">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}/">{{ tasks.title }}</td>
+                    <td>{{tasks.description}}</td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td>{{ tasks.link }}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
                         <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr class="table-light" bgcolor="#BE8BFF">
+                    <td style="color: #000000" colspan="11"><b>Сопровождение</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Сопровождение"%}
+                <tr class="table-light" bgcolor="#BE8BFF">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}/">{{ tasks.title }}</td>
+                    <td>{{tasks.description}}</td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td>{{ tasks.link }}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option selected name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr class="table-light" bgcolor="#C2DFDB">
+                    <td style="color: #000000" colspan="11"><b>Сделаны</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Сделана"%}
+                <tr class="table-light" bgcolor="#C2DFDB">
+                    <td style="cursor: pointer;" data-href="task/{{tasks.id}}/">{{ tasks.title }}</td>
+                    <td>{{tasks.description}}</td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td>{{ tasks.link }}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/mainUserSaveEditTask1/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
                         <option selected name ="state {{tasks.id}}" value="Сделана">Сделана</option>
                         </select>
                     </td>
-                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
-                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
-                    <td><input type="button" value="Сохранить" onclick="location.href='/mainUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)"></td>
-                </tr>
-                {% endif %}
-
-                {% if tasks.state == "Принята"%}
-                <tr class="table-light" bgcolor="#D3D3D3">
-                    <td>{{ tasks.title }}</td>
-                    <td>{{ tasks.executor }}</td>
-                    <td>{{ tasks.dateStart }}</td>
-                    <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsible }}</td>
-                    <td>{{ tasks.titleProject }}</td>
-                    <td><select name="state {{tasks.id}}">
-                        <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
-                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
-                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
-                        </select>
-                    </td>
-                    <td><textarea name="link {{tasks.id}}">{{tasks.link}}</textarea></td>
-                    <td><textarea name="comment {{tasks.id}}">{{tasks.comment}}</textarea></td>
-                    <td><input type="button" value="Сохранить" onclick="location.href='/mainUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['comment {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value)"></td>
                 </tr>
                 {% endif %}
                 {% endfor %}
             </table>
-            </div>
+          </div>
             {% endif %}
-          <span class="example1-pagination_link example1-pagination_link__active">
-            Страница {{ pageObj1.number }} из {{ pageObj1.paginator.num_pages }}.
-            </span>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                {% for p in pageObj.paginator.page_range %}
-                <li class="page-item"><a style="color: Black" class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                {% endfor %}
-            </ul>
-          </nav>
  </form>
 </div>
 {% endif %}
 </section>
+{% endif %}
 {% endblock content %}

@@ -12,32 +12,37 @@
         <div>
             <br>
         <h3>Личный кабинет пользователя</h3>
-        <a>(Здесь вы можете изменить логин и пароль для доступа к аккаунту)</a>
+        <a style="font-size: 14px">(Здесь вы можете изменить логин и пароль для доступа к аккаунту)</a>
+            <br>
             <br>
         </div>
-<div class="w-40 p-2 justify-content-star">
-    <div class="w-35 p-2 mx-auto">
-      <label style="font-size: 16px">Ваш логин: <input style="font-size: 16px"  type="text" name="login" value = "{{user.login}}" /></label>
+<div>
+    <div class="w-35 mx-auto">
+      <label style="font-size: 16px">Ваш логин: </label><br>
+        <input style="font-size: 16px"  type="text" name="login" value = "{{user.login}}" />
     </div>
-    <div class="w-35 p-2 mx-auto">
-      <label style="font-size: 16px">Ваше имя: <input style="font-size: 16px" type="text" name="name" value = "{{user.name}}" /></label>
+    <div class="w-35 mx-auto">
+      <label style="font-size: 16px">Ваше имя: </label><br>
+        <input style="font-size: 16px" type="text" name="name" value = "{{user.name}}" />
     </div>
-    <div class="w-35 p-2 mx-auto">
-      <label style="font-size: 16px">Телефон: <input style="font-size: 16px" type="text" name="number" value = "{{user.number}}" /></label>
+    <div class="w-35 mx-auto">
+      <label style="font-size: 16px">Телефон: </label><br>
+        <input style="font-size: 16px" type="text" name="number" value = "{{user.number}}" />
     </div>
-    <div class="w-45 p-2 mx-auto">
-      <label style="font-size: 16px">Пароль: <input style="font-size: 16px" type="password" name="password" value = ""/></label>
+    <div class="w-45 mx-auto">
+      <label style="font-size: 16px">Пароль: </label><br>
+        <input style="font-size: 16px" type="password" name="password" value = ""/>
     </div>
 </div>
 <div class="w-35 p-2 mx-auto">
-    <input type="submit" class="w-60 btn btn-dark" name="user" value="Сохранить" >
+    <input type="submit" class="btn btn-dark" name="user" value="Сохранить" >
 </div>
     </form>
-<hr>
+<hr style="color: Black;">
 {% if tag != "Администратор" and tag != "guest" %}
 <form class="text-center" method="POST">
         {% csrf_token %}
-        <a  class="w-35 btn btn-lg btn-dark" href="/tagUsers/">Список пользователей</a>
+        <a  class="btn btn-dark" href="/tagUsers/">Список пользователей</a>
 </form>
 {% endif %}
 
@@ -47,27 +52,29 @@
 <br>
     <div class="container-xxl">
   <div class="row">
-    <div class="col-sm">
+    <div class="col-12 col-sm-12 col-md-12 col-lg">
         <div>
-            <h3>Добавление нового тэга для пользователей</h3>
+            <h3>Действия с пользователями:</h3>
             <br>
         </div>
-        <p>
-            <label>Название тэга: <input type="text" name="tagName" /> <input class="w-35 btn btn-dark" type="submit" value="Добавить" name="tag"></label><br>
-        </p>
-        <br>
+
     {% if tag == "Администратор"%}
-        <a class="w-35 btn btn-dark" href="/registration/">Регистрация</a><br><br>
-        <a class="w-35 btn btn-dark" href="/registrationForAdmin/">Регистрация нового администратора</a><br><br>
-        <a class="w-35 btn btn-dark" href="/tagUsers/">Список пользователей</a>
+        <a class="btn btn-dark" href="/registration/">Регистрация исполнителя</a><br><br>
+        <a class="btn btn-dark" href="/registrationForAdmin/">Регистрация администратора</a><br><br>
+        <a class="btn btn-dark" href="/tagUsers/">Список пользователей</a>
     <br>
         <br>
     {% endif %}
     </div>
-      <div class="col-sm" align="center">
+      <div class="col-12 col-sm-12 col-md-12 col-lg" align="center">
           {% if tagList.count > 0 %}
           <form method="POST">
-            <h3>Тэги пользователей:</h3>
+            <h3>Добавление нового тэга для пользователя:</h3>
+                <p>
+                    <label>Название тэга: <input type="text" name="tagName" /> <input class="btn btn-dark" type="submit" value="Добавить" name="tag"></label><br>
+                </p>
+            <br>
+            <h3>Список доступных тэгов для пользователей:</h3>
             <table class="table-dark">
                 <thead>
                 <th>Тэг</th>
@@ -75,8 +82,14 @@
                 </thead>
                 {% for tag in pageObj %}
                 <tr  class="table-light">
+                    {% if tag.name == "Администратор" %}
+                    <td>{{ tag.name }}</td>
+                    <td>Данный тэг невозможно удалить</td>
+                    {% endif %}
+                    {% if tag.name != "Администратор" %}
                     <td>{{ tag.name }}</td>
                     <td><a href="deleteTag/{{tag.id}}">Удалить</a></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </table>

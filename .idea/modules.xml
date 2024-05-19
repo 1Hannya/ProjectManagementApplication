@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ProjectManagementApplication.iml" filepath="$PROJECT_DIR$/.idea/ProjectManagementApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ProjectManagementApplication(Scrumban).iml" filepath="$PROJECT_DIR$/.idea/ProjectManagementApplication(Scrumban).iml" />
     </modules>
   </component>
 </project>

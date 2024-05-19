@@ -8,7 +8,10 @@ class User(models.Model):
     tag = models.CharField(max_length=100)
     number = models.CharField(max_length=11)
     birthday = models.CharField(max_length=10)
-    comment = models.TextField()
+    note = models.TextField()
+    visual = models.IntegerField()
+    style = models.CharField(max_length=10)
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
@@ -22,18 +25,30 @@ class Project(models.Model):
     dateEnd = models.CharField(max_length=10)
     state = models.CharField(max_length=20)
     link = models.TextField()
-    comment = models.TextField()
+    description = models.TextField()
 
 class Task(models.Model):
     title = models.CharField(max_length=150)
     idExecutor = models.IntegerField()
-    executor = models.CharField(max_length=100)
-    responsible = models.CharField(max_length=100)
+    executorName = models.CharField(max_length=100)
+    idResponsible = models.IntegerField()
+    responsibleName = models.CharField(max_length=100)
     dateStart = models.CharField(max_length=10)
     dateEnd = models.CharField(max_length=10)
     link = models.TextField()
-    comment = models.TextField()
+    description = models.TextField()
     idProject = models.IntegerField()
     titleProject = models.TextField()
     state = models.CharField(max_length=20)
+
+class Message(models.Model):
+    idTask = models.IntegerField()
+    messageText = models.TextField()
+    date = models.TextField()
+    idUser = models.IntegerField()
+    userName = models.CharField(max_length=100)
+    idUserRecipient = models.IntegerField()
+    messageStatus = models.IntegerField()
+
+
 

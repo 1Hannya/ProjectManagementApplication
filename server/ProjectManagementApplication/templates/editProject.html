@@ -22,40 +22,40 @@
         <table class="table">
   <tbody>
     <tr>
-      <th style="border: 0px; text-align: left;"><label style="font-size: 16px">Название проекта:</label></th>
-      <td style="border: 0px;"><input style="font-size: 16px" class="container-fluid" type="text" name="title" value = "{{project.title}}" /></td>
+      <th style="border: 0px; text-align: left;"><label>Название проекта:</label></th>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="title" value = "{{project.title}}" /></td>
     </tr>
     <tr>
-      <th style="border: 0px; text-align: left;"><label style="font-size: 16px">Дата начала:</label></th>
-      <td style="border: 0px;"><input style="font-size: 16px" class="container-fluid" type="text" name="dateStart" value = "{{project.dateStart}}" /></td>
+      <th style="border: 0px; text-align: left;"><label>Описание:</label></th>
+      <td style="border: 0px;"><textarea style="border-radius:5px; border:1px solid;" class="container-fluid" name="description">{{project.description}} </textarea></td>
+    </tr>
+    <tr>
+      <th style="border: 0px; text-align: left;"><label>Дата начала:</label></th>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="dateStart" value = "{{project.dateStart}}" /></td>
     </tr>
   <tr>
-      <th style="border: 0px; text-align: left;"><label style="font-size: 16px">Дата окончания:</label></th>
-      <td style="border: 0px;"><input style="font-size: 16px" class="container-fluid" type="text" name="dateEnd" value = "{{project.dateEnd}}" /></td>
+      <th style="border: 0px; text-align: left;"><label>Дата окончания:</label></th>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="dateEnd" value = "{{project.dateEnd}}" /></td>
     </tr>
   <tr>
-      <th style="border: 0px; text-align: left;"><label style="font-size: 16px">Имя клиента:</label></th>
-      <td style="border: 0px;"><input style="font-size: 16px" class="container-fluid" type="text" name="clientName" value = "{{project.clientName}}" /></td>
+      <th style="border: 0px; text-align: left;"><label>Имя клиента:</label></th>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="clientName" value = "{{project.clientName}}" /></td>
     </tr>
   <tr>
-      <th style="border: 0px; text-align: left;"><label style="font-size: 16px">E-mail клиента:</label></th>
-      <td style="border: 0px;"><input style="font-size: 16px" class="container-fluid" type="text" name="email" value = "{{project.email}}" /></td>
+      <th style="border: 0px; text-align: left;"><label>E-mail клиента:</label></th>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="email" value = "{{project.email}}" /></td>
     </tr>
   <tr>
-     <th style="border: 0px; text-align: left;"><label style="font-size: 16px">Номер клиента:</label></th>
-      <td style="border: 0px;"><input style="font-size: 16px" class="container-fluid" type="text" name="number" value = "{{project.number}}" /></td>
+     <th style="border: 0px; text-align: left;"><label>Номер клиента:</label></th>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="number" value = "{{project.number}}" /></td>
     </tr>
   <tr>
-      <th style="border: 0px; text-align: left;"><label style="font-size: 16px">Ссылки:</label></th>
-      <td style="border: 0px;"><textarea style="font-size: 16px" class="container-fluid" name="link">{{project.link}} </textarea></td>
-    </tr>
-  <tr>
-      <th style="border: 0px; text-align: left;"><label style="font-size: 16px">Комментарий:</label></th>
-      <td style="border: 0px;"><textarea style="font-size: 16px" class="container-fluid" name="comment">{{project.comment}} </textarea></td>
+      <th style="border: 0px; text-align: left;"><label>Ссылки:</label></th>
+      <td style="border: 0px;"><textarea style="border-radius:5px; border:1px solid;" class="container-fluid" name="link">{{project.link}} </textarea></td>
     </tr>
   </tbody>
 </table>
-    <input type="submit" class="w-60 btn btn-lg btn-dark" value="Сохранить" >
+    <input style="font-size: 16px" type="submit" class="btn btn-dark" value="Сохранить" >
 </div>
     </form>
 {% endif %}
