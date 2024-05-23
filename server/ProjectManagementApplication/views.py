@@ -114,7 +114,8 @@ def registrationForAdmin(request):
                 user.save()
                 return HttpResponseRedirect("/personalArea/")
             else:
-                return HttpResponse("Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта")
+                errorMsg = "Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта"
+                return render(request, "registrationForAdmin.html", {"form": form, "tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "errorMsg": errorMsg})
     return render(request, "registrationForAdmin.html", {"form": form, "tag": request.session['tag'], "name": request.session['name'], "login": request.session['login']})
 
 def registration(request):
@@ -145,7 +146,8 @@ def registration(request):
                 user.save()
                 return HttpResponseRedirect("/personalArea/")
             else:
-                return HttpResponse("Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта")
+                errorMsg = "Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта"
+                return render(request, "registration.html", {"form": form, "tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "errorMsg": errorMsg})
     return render(request, "registration.html", {"tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "form": form})
 
 def validate_login(request):
@@ -158,6 +160,7 @@ def validate_login(request):
 
 #АвторизацияИВыход
 def login(request):
+    errorMsg = None
     try:
         if request.method == "POST":
             login = request.POST.get("login")
@@ -167,12 +170,15 @@ def login(request):
                 request.session['name'] = userForSession.name
                 request.session['login'] = userForSession.login
                 request.session['tag'] = userForSession.tag
-            return HttpResponseRedirect("/")
+                return HttpResponseRedirect("/")
+            else:
+                errorMsg = "Введен неверный логин и/или пароль"
+                return render(request, "login.html", {"tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "errorMsg": errorMsg})
         else:
             return render(request, "login.html", {"tag": request.session['tag'], "name": request.session['name'], "login": request.session['login']})
     except User.DoesNotExist:
-        return HttpResponseNotFound("<h2>Введен неверный логин (такого пользователя не существует)</h2>")
-
+        errorMsg = "Введен неверный логин и/или пароль"
+        return render(request, "login.html", {"tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "errorMsg": errorMsg})
 
 def logout(request):
     try:
@@ -230,7 +236,9 @@ def editUser(request):
                             request.session['name'] = user.name
                             request.session['login'] = user.login
                         else:
-                            return HttpResponse('Введенный логин уже занят')
+                             errorMsg = "Введенный логин уже занят"
+                             return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
+                                            "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login'], "errorMsg": errorMsg})
                     elif (request.POST.get("name") != '' and request.POST.get("login") != '' and password == ''):
                         users = User.objects.filter(login__exact  = str(request.POST.get("login")))
                         if (len(users) == 0):
@@ -248,13 +256,18 @@ def editUser(request):
                             request.session['name'] = user.name
                             request.session['login'] = user.login
                         else:
-                            return HttpResponse('Введенный логин уже занят')
+                            errorMsg = "Введенный логин уже занят"
+                            return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
+                                        "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login'], "errorMsg": errorMsg})
                     else:
-                        return HttpResponse('Введенны некорректные данные')
-                return HttpResponseRedirect("/")
+                        errorMsg = "Введенны некорректные данные"
+                        return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
+                                    "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login'], "errorMsg": errorMsg})
+                return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
+                            "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login']})
             else:
                 return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
-                                                             "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login']})
+                            "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login']})
         except User.DoesNotExist:
             return HttpResponseNotFound("<h2>Пользователь не найден</h2>")
 
@@ -394,30 +407,14 @@ def editProject(request, id):
                         task.titleProject = project.title
                         task.save()
                 else:
-                    return HttpResponse('Введенны некорректные данные')
+                    errorMsg = "Введенны некорректные данные"
+                    return render(request, "editProject.html", {"project": project, "name": request.session['name'], "tag": request.session['tag'], "messageList": messageList, "msgState": msgState, "projectTitle": project.title, "errorMsg": errorMsg})
                 return HttpResponseRedirect("/projects/")
             else:
-                return render(request, "editProject.html", {"project": project, "name": request.session['name'], "tag": request.session['tag'], "messageList": messageList, "msgState": msgState, "title": project.title})
+                return render(request, "editProject.html", {"project": project, "name": request.session['name'], "tag": request.session['tag'], "messageList": messageList, "msgState": msgState, "projectTitle": project.title})
         except Project.DoesNotExist:
             return HttpResponseNotFound("<h2>Проект не найден</h2>")
 
-def saveEditProjectDescription(request, id, description):
-    try:
-            project = Project.objects.get(id=id)
-            project.description = description
-            project.save()
-            return HttpResponseRedirect("/projects/")
-    except Project.DoesNotExist:
-        return HttpResponseNotFound("<h2>Проект не найден</h2>")
-
-def saveEditProjectLink(request, id, link):
-    try:
-            project = Project.objects.get(id=id)
-            project.link = link
-            project.save()
-            return HttpResponseRedirect("/projects/")
-    except Project.DoesNotExist:
-        return HttpResponseNotFound("<h2>Проект не найден</h2>")
 def saveEditProjectState(request, id, state):
     try:
             project = Project.objects.get(id=id)
@@ -504,6 +501,7 @@ def fallInTask(request, id):
         return HttpResponse('У вас нет доступа к этой странице')
     else:
         try:
+            errorMsg = ''
             messageList = list()
             userList = User.objects.all()
             user=User.objects.get(login=request.session['login'])
@@ -522,25 +520,35 @@ def fallInTask(request, id):
             if (len(messageList) == 0):
                 msgState = 0
             if request.method == "POST":
-                task.title = request.POST.get("title")
-                task.dateStart = request.POST.get("dateStart")
-                task.dateEnd = request.POST.get("dateEnd")
-                task.titleProject = project.title
-                task.state = task.state
-                task.link = request.POST.get("link")
-                task.description = request.POST.get("comment")
-                executor = User.objects.get(id=task.idExecutor)
-                task.executorName = executor.name
-                idUser = executor.id
-                task.idExecutor = executor.id
-                task.idProject = project.id
-                if (task.title != '' and task.dateStart != '' and task.dateEnd != '' and task.executorName != ''):
-                    task.save()
+                if(user.tag == "Администратор"):
+                    task.title = request.POST.get("title")
+                    task.dateEnd = request.POST.get("dateEnd")
+                    task.titleProject = project.title
+                    task.state = request.POST.get("state")
+                    task.link = request.POST.get("link")
+                    task.description = request.POST.get("description")
+                    executor = User.objects.get(id=request.POST.get("executor"))
+                    task.executorName = executor.name
+                    idUser = executor.id
+                    task.idExecutor = executor.id
+                    task.idProject = project.id
+                    if (task.title != '' and task.description != '' and task.dateEnd != '' and task.link != ''):
+                        task.save()
+                        return HttpResponseRedirect("/task/"+str(task.id)+"/")
+                    else:
+                        errorMsg = 'Заполните все поля'
+                        return render(request, "fallInTask.html", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "messagesChat": messagesChat, "userList": userList, "messageList": messageList, "msgState": msgState, "errorMsg": errorMsg})
                 else:
-                    return HttpResponse('Введенны некорректные данные')
-                return HttpResponseRedirect("/task/"+str(task.idProject)+"/")
+                    task.link = request.POST.get("link")
+                    task.state = request.POST.get("state")
+                    if (task.link != ''):
+                        task.save()
+                        return HttpResponseRedirect("/task/"+str(task.id)+"/")
+                    else:
+                        errorMsg = 'Заполните все поля'
+                        return render(request, "fallInTask.html", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "messagesChat": messagesChat, "userList": userList, "messageList": messageList, "msgState": msgState, "errorMsg": errorMsg})
             else:
-                return render(request, "fallInTask.html", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "messagesChat": messagesChat, "userList": userList, "messageList": messageList, "msgState": msgState})
+                return render(request, "fallInTask.html", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "messagesChat": messagesChat, "userList": userList, "messageList": messageList, "msgState": msgState, "errorMsg": errorMsg})
         except Task.DoesNotExist:
             return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 
@@ -558,22 +566,21 @@ def saveEditTask(request, id, description, link, state, executorId):
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 
-def mainSaveEditTask(request, id, description, link, state, executorId):
+def mainSaveEditTask(request, id, state, executorId):
     try:
-            task = Task.objects.get(id=id)
-            task.description = description
-            task.link = link
-            task.state = state
-            user = User.objects.get(id=executorId)
-            task.idExecutor = executorId
-            task.executorName = user.name
-            task.save()
-            return HttpResponseRedirect("/")
+        task = Task.objects.get(id=id)
+        task.state = state
+        user = User.objects.get(id=executorId)
+        task.idExecutor = executorId
+        task.executorName = user.name
+        task.save()
+        return HttpResponseRedirect("/")
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 
 def inTaskEditDateEnd(request, id, dateEnd):
     try:
+        if(dateEnd != ""):
             userList = User.objects.all()
             task = Task.objects.get(id=id)
             messages = Message.objects.filter(idTask=task.id)
@@ -582,6 +589,14 @@ def inTaskEditDateEnd(request, id, dateEnd):
             task.dateEnd = dateEnd
             task.save()
             return HttpResponseRedirect("/task/" + str(task.id) + "/", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "messages": messages, "userList": userList})
+        else:
+            userList = User.objects.all()
+            task = Task.objects.get(id=id)
+            messages = Message.objects.filter(idTask=task.id)
+            user = User.objects.get(login=request.session['login'])
+            idUser = user.id
+            errorMsg = "Дата окончания не может быть пуста"
+            return render(request, "fallInTask.html", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "userList": userList, "messages": messages, "errorMsg": errorMsg})
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 
@@ -663,11 +678,9 @@ def mainUserSaveEditTask(request, id, description, link, state):
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 
-def tasksUserSaveEditTask(request, id, description, link, state, executorId):
+def tasksUserSaveEditTask(request, id, state, executorId):
     try:
             task = Task.objects.get(id=id)
-            task.description = description
-            task.link = link
             executor = User.objects.get(id=executorId)
             task.idExecutor = executorId
             task.executorName = executor.name
@@ -762,17 +775,15 @@ def controlUserSaveEditTask1(request, id, state):
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 
-def controlSaveEditTask(request, id, description, link, state, executorId):
+def controlSaveEditTask(request, id, state, executorId):
     try:
-            task = Task.objects.get(id=id)
-            task.description = description
-            task.link = link
-            task.state = state
-            user = User.objects.get(id=executorId)
-            task.idExecutor = executorId
-            task.executorName = user.name
-            task.save()
-            return HttpResponseRedirect("/tasksUnderControl/")
+        task = Task.objects.get(id=id)
+        task.state = state
+        user = User.objects.get(id=executorId)
+        task.idExecutor = executorId
+        task.executorName = user.name
+        task.save()
+        return HttpResponseRedirect("/tasksUnderControl/")
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 

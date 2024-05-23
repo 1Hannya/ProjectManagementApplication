@@ -41,8 +41,8 @@
                 {% if tasks.state == "Принята"%}
                 <tr class="table-light" bgcolor="#ffffff">
                     <td style="cursor: pointer;" data-href="/task/{{tasks.id}}">{{ tasks.title }}</td>
-                    <td><textarea name="description {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
-                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                    <td>{{tasks.description}}</td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
             {% for i in userList %}
             {% if i.name == tasks.executorName %}
                 <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
@@ -57,12 +57,12 @@
                     <td>{{ tasks.dateEnd }}</td>
                     <td>{{ tasks.responsibleName }}</td>
                     <td>{{ tasks.titleProject }}</td>
-                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
-                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                    <td>{{tasks.link}}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
                         <option selected name ="state {{tasks.id}}" value="Принята">Принята</option>
                         <option name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
                         <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
                         <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
                         </select>
                     </td>
@@ -78,8 +78,8 @@
                 {% if tasks.state == "В работе"%}
                 <tr style="background-color:#0990df66" class="table-light">
                     <td style="cursor: pointer;" data-href="/task/{{tasks.id}}">{{ tasks.title }}</td>
-                    <td><textarea name="description {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
-                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                    <td>{{tasks.description}}</td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
             {% for i in userList %}
             {% if i.name == tasks.executorName %}
                 <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
@@ -94,49 +94,12 @@
                     <td>{{ tasks.dateEnd }}</td>
                     <td>{{ tasks.responsibleName }}</td>
                     <td>{{ tasks.titleProject }}</td>
-                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
-                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                    <td>{{tasks.link}}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
                         <option name ="state {{tasks.id}}" value="Принята">Принята</option>
                         <option selected name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
                         <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
-                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
-                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
-                        </select>
-                    </td>
-                    <td><a href="/projects/tasks/deleteTask/{{tasks.id}}/">Удалить</a></td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-
-                <tr class="table-light" bgcolor="#FFDF6FA3">
-                    <td style="color: #000000" colspan="11"><b>Приостановлены</b></td>
-                </tr>
-                {% for tasks in pageObj %}
-                {% if tasks.state == "Приостановлена"%}
-                <tr class="table-light" bgcolor="#FFDF6FA3">
-                    <td style="cursor: pointer;" data-href="/task/{{tasks.id}}">{{ tasks.title }}</td>
-                    <td><textarea name="description {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
-                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
-            {% for i in userList %}
-            {% if i.name == tasks.executorName %}
-                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
-            {% endif %}
-            {% if i.name != tasks.executorName %}
-                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
-            {% endif %}
-            {% endfor %}
-            </select>
-            </td>
-                    <td>{{ tasks.dateStart }}</td>
-                    <td>{{ tasks.dateEnd }}</td>
-                    <td>{{ tasks.responsibleName }}</td>
-                    <td>{{ tasks.titleProject }}</td>
-                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
-                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
-                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
-                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
-                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
                         <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
                         </select>
                     </td>
@@ -152,8 +115,8 @@
                 {% if tasks.state == "Сопровождение"%}
                 <tr class="table-light" bgcolor="#AE88DD">
                     <td style="cursor: pointer;" data-href="/task/{{tasks.id}}">{{ tasks.title }}</td>
-                    <td><textarea name="description {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
-                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                    <td>{{tasks.description}}</td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
             {% for i in userList %}
             {% if i.name == tasks.executorName %}
                 <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
@@ -168,12 +131,49 @@
                     <td>{{ tasks.dateEnd }}</td>
                     <td>{{ tasks.responsibleName }}</td>
                     <td>{{ tasks.titleProject }}</td>
-                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
-                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                    <td>{{tasks.link}}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
                         <option name ="state {{tasks.id}}" value="Принята">Принята</option>
                         <option name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
                         <option selected name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
+                        <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
+                        </select>
+                    </td>
+                    <td><a href="/projects/tasks/deleteTask/{{tasks.id}}/">Удалить</a></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                <tr class="table-light" bgcolor="#FFDF6FA3">
+                    <td style="color: #000000" colspan="11"><b>Приостановлены</b></td>
+                </tr>
+                {% for tasks in pageObj %}
+                {% if tasks.state == "Приостановлена"%}
+                <tr class="table-light" bgcolor="#FFDF6FA3">
+                    <td style="cursor: pointer;" data-href="/task/{{tasks.id}}">{{ tasks.title }}</td>
+                    <td>{{tasks.description}}</td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+            {% for i in userList %}
+            {% if i.name == tasks.executorName %}
+                <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% if i.name != tasks.executorName %}
+                <option name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+            </td>
+                    <td>{{ tasks.dateStart }}</td>
+                    <td>{{ tasks.dateEnd }}</td>
+                    <td>{{ tasks.responsibleName }}</td>
+                    <td>{{ tasks.titleProject }}</td>
+                    <td>{{tasks.link}}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form'].elements['executor {{tasks.id}}'].value)">
+                        <option name ="state {{tasks.id}}" value="Принята">Принята</option>
+                        <option name ="state {{tasks.id}}" value="В работе">В работе</option>
+                        <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option selected name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
                         <option name ="state {{tasks.id}}" value="Сделана">Сделана</option>
                         </select>
                     </td>
@@ -217,8 +217,8 @@
                 {% if tasks.state == "Сделана"%}
                 <tr style="background-color:#C2DFDB" class="table-light">
                     <td style="cursor: pointer;" data-href="/task/{{tasks.id}}">{{ tasks.title }}</td>
-                    <td><textarea name="description {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form1'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form1'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['executor {{tasks.id}}'].value)">{{tasks.description}}</textarea></td>
-                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form1'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form1'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['executor {{tasks.id}}'].value)">
+                    <td>{{tasks.description}}</td>
+                    <td><select name ="executor {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form1'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['executor {{tasks.id}}'].value)">
             {% for i in userList %}
             {% if i.name == tasks.executorName %}
                 <option selected name ="executor {{tasks.id}}" value={{i.id}}>{{ i.name }}</option>
@@ -233,12 +233,12 @@
                     <td>{{ tasks.dateEnd }}</td>
                     <td>{{ tasks.responsibleName }}</td>
                     <td>{{ tasks.titleProject }}</td>
-                    <td><textarea name="link {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form1'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form1'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['executor {{tasks.id}}'].value)">{{tasks.link}}</textarea></td>
-                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form1'].elements['description {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['link {{tasks.id}}'].value)  + '/' + encodeURIComponent(document.forms['form1'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['executor {{tasks.id}}'].value)">
+                    <td>{{tasks.link}}</td>
+                    <td><select name="state {{tasks.id}}" onchange="location.href='/tasksUserSaveEditTask/{{tasks.id}}/'+ encodeURIComponent(document.forms['form1'].elements['state {{tasks.id}}'].value) + '/' + encodeURIComponent(document.forms['form1'].elements['executor {{tasks.id}}'].value)">
                         <option name ="state {{tasks.id}}" value="Принята">Принята</option>
                         <option name ="state {{tasks.id}}" value="В работе">В работе</option>
-                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
                         <option name ="state {{tasks.id}}" value="Сопровождение">Сопровождение</option>
+                        <option name ="state {{tasks.id}}" value="Приостановлена">Приостановлена</option>
                         <option selected name ="state {{tasks.id}}" value="Сделана">Сделана</option>
                         </select>
                     </td>

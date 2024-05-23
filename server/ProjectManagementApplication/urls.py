@@ -14,9 +14,9 @@ urlpatterns = [
     path("tagUsers/", tagUsers),
     path("saveEdit/<int:id>/<str:tag>/", saveEdit),
     path("saveEditTask/<int:id>/<str:description>/<path:link>/<str:state>/<int:executorId>/", saveEditTask),
-    path("mainSaveEditTask/<int:id>/<str:description>/<path:link>/<str:state>/<int:executorId>/", mainSaveEditTask),
+    path("mainSaveEditTask/<int:id>/<str:state>/<int:executorId>/", mainSaveEditTask),
     path("mainUserSaveEditTask/<int:id>/<str:description>/<path:link>/<str:state>/", mainUserSaveEditTask),
-    path("tasksUserSaveEditTask/<int:id>/<str:description>/<path:link>/<str:state>/<int:executorId>", tasksUserSaveEditTask),
+    path("tasksUserSaveEditTask/<int:id>/<str:state>/<int:executorId>", tasksUserSaveEditTask),
     path("mainUserSaveEditTask1/<int:id>/<str:state>/", mainUserSaveEditTask1),
     path("delete/<int:id>/", delete),
     path("projects/deleteProject/<int:id>/", deleteProject),
@@ -42,12 +42,8 @@ urlpatterns = [
     path("editVisualTask1/", editVisualTask1),
     path("controlUserSaveEditTask1/<int:id>/<str:state>/", controlUserSaveEditTask1),
     path("task/<int:id>/", fallInTask),
-    path("controlSaveEditTask/<int:id>/<str:description>/<path:link>/<str:state>/<int:executorId>/", controlSaveEditTask),
+    path("controlSaveEditTask/<int:id>/<str:state>/<int:executorId>/", controlSaveEditTask),
 
     path("statistics/", statistics),
-
-    #path("saveEditProject/<int:id>/<str:description>/<path:link>/<str:state>/", saveEditProject),
-    path("saveEditProjectDescription/<int:id>/<str:description>/", saveEditProjectDescription),
-    path("saveEditProjectLink/<int:id>/<path:link>/", saveEditProjectLink),
     path("saveEditProjectState/<int:id>/<str:state>/", saveEditProjectState),
 ]

@@ -14,13 +14,13 @@
     <form method="POST">
         {% csrf_token %}
         <div align="center" class="container"><br>
-        <h3>Для создания новой задачи заполните поля ниже</h3>
+        <h3 style="font-size: 18px">Для создания новой задачи заполните поля ниже</h3>
             <br>
         <table align="center">
           <tbody>
           {% for field in form %}
             <tr>
-              <td style="font-size: 16px"><b>{{field.label_tag}}</b></td>
+              <td style="font-size: 14px"><b>{{field.label_tag}}</b></td>
               <td>{{field}}</td>
             </tr>
           {% endfor %}

@@ -38,7 +38,14 @@
 
             {% endfor %}
             </select>
-        <td><a href="/delete/{{user.id}}/">Удалить</a></td>
+        <td>
+            {% if user.login != login %}
+                <a href="/delete/{{user.id}}/">Удалить</a>
+            {% endif %}
+            {% if user.login == login %}
+                Вы не можете удалить себя
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
 </table>

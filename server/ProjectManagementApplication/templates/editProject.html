@@ -11,13 +11,13 @@
 {% endif %}
 
 {% if tag == "Администратор"%}
-    <form method="POST">
-        {% csrf_token %}
-        <div align="center" class="container-fluid">
-            <br>
-        <h3>Изменение проекта {{title}}</h3>
-            <br>
-        </div>
+  <form method="POST">
+      {% csrf_token %}
+      <div align="center" class="container-fluid">
+          <br>
+      <h3>Изменение проекта {{projectTitle}}</h3>
+          <br>
+      </div>
 <div align="center" class="w-25 p-0.5 mx-auto">
         <table class="table">
   <tbody>
@@ -27,7 +27,7 @@
     </tr>
     <tr>
       <th style="border: 0px; text-align: left;"><label>Описание:</label></th>
-      <td style="border: 0px;"><textarea style="border-radius:5px; border:1px solid;" class="container-fluid" name="description">{{project.description}} </textarea></td>
+      <td style="border: 0px;"><textarea style="border-radius:5px; border:1px solid;" class="container-fluid" name="description">{{project.description}}</textarea></td>
     </tr>
     <tr>
       <th style="border: 0px; text-align: left;"><label>Дата начала:</label></th>
@@ -51,10 +51,13 @@
     </tr>
   <tr>
       <th style="border: 0px; text-align: left;"><label>Ссылки:</label></th>
-      <td style="border: 0px;"><textarea style="border-radius:5px; border:1px solid;" class="container-fluid" name="link">{{project.link}} </textarea></td>
+      <td style="border: 0px;"><textarea style="border-radius:5px; border:1px solid;" class="container-fluid" name="link">{{project.link}}</textarea></td>
     </tr>
   </tbody>
 </table>
+    <label style="color: red;">{{errorMsg}}</label>
+    <br>
+    <br>
     <input style="font-size: 16px" type="submit" class="btn btn-dark" value="Сохранить" >
 </div>
     </form>
