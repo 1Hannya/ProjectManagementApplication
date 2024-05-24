@@ -223,6 +223,8 @@ def editUser(request):
                             user.name = request.POST.get("name")
                             user.login = request.POST.get("login")
                             user.number = request.POST.get("number")
+                            user.email = request.POST.get("email")
+                            user.birthday = request.POST.get("birthday")
                             user.password = pbkdf2_sha256.encrypt(password, rounds=12000, salt_size=30)
                             user.save()
                             request.session['name'] = user.name
@@ -231,6 +233,8 @@ def editUser(request):
                             user.name = request.POST.get("name")
                             user.login = request.POST.get("login")
                             user.number = request.POST.get("number")
+                            user.email = request.POST.get("email")
+                            user.birthday = request.POST.get("birthday")
                             user.password = pbkdf2_sha256.encrypt(password, rounds=12000, salt_size=30)
                             user.save()
                             request.session['name'] = user.name
@@ -245,6 +249,8 @@ def editUser(request):
                             user.name = request.POST.get("name")
                             user.login = request.POST.get("login")
                             user.number = request.POST.get("number")
+                            user.email = request.POST.get("email")
+                            user.birthday = request.POST.get("birthday")
                             user.save()
                             request.session['name'] = user.name
                             request.session['login'] = user.login
@@ -252,6 +258,8 @@ def editUser(request):
                             user.name = request.POST.get("name")
                             user.login = request.POST.get("login")
                             user.number = request.POST.get("number")
+                            user.email = request.POST.get("email")
+                            user.birthday = request.POST.get("birthday")
                             user.save()
                             request.session['name'] = user.name
                             request.session['login'] = user.login
@@ -692,10 +700,10 @@ def tasksUserSaveEditTask(request, id, state, executorId):
 
 def mainUserSaveEditTask1(request, id, state):
     try:
-            task = Task.objects.get(id=id)
-            task.state = state
-            task.save()
-            return HttpResponseRedirect("/")
+        task = Task.objects.get(id=id)
+        task.state = state
+        task.save()
+        return HttpResponseRedirect("/")
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 
