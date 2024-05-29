@@ -1,88 +1,88 @@
-    {% load static %}
-    body{
-    font-size: 14px;
-    }
-    h3 {
-    font-weight: 700;
-    font-size: 18px;
-    font-family: system-ui;
-    }
-    h4 {
-    font-family: system-ui;
-    }
-    h6 {
-    font-weight: normal;
-    font-size: 14px;
-    font-family: system-ui;
-    }
-    A {
-    color: #000000; /* Цвет текста */
-    font-size: 14px;
-    font-family: system-ui;
-    }
-   #textarea_main {
-    background: #FFF0E2; /* Цвет фона */
-    border: 2px solid #000000; /* Параметры рамки */
-    width: 100%; /* Ширина */
-    height: 320px; /* Высота */
-    border-bottom-right-radius: 15px;
-    border-top-right-radius: 15px;
-    box-sizing: border-box; /* Алгоритм расчёта ширины */
-    font-size: 14px; /* Размер шрифта */
-    font-family: system-ui;
-    resize: none;
-   }
-   #textarea_main_user {
-    background: #FFF0E2; /* Цвет фона */
-    border: 2px solid #000000; /* Параметры рамки */
-    width: 100%; /* Ширина */
-    height: 320px; /* Высота */
-    border-bottom-right-radius: 15px;
-    border-top-right-radius: 15px;
-    box-sizing: border-box; /* Алгоритм расчёта ширины */
-    font-size: 14px; /* Размер шрифта */
-    font-family: system-ui;
-    resize: none;
-   }
-   #textarea_message {
-    background: #FFDAB9; /* Цвет фона */
-    border: 2px solid #000000; /* Параметры рамки */
-    width: 100%; /* Ширина */
-    height: 320px; /* Высота */
-    box-sizing: border-box; /* Алгоритм расчёта ширины */
-    font-size: 14px; /* Размер шрифта */
-    font-family: system-ui;
-   }
-    TABLE {
-    border-collapse: collapse; /* Убираем двойные линии между ячейками */
-    width: 90%; /* Ширина таблицы */
-    font-size: 14px; /* Размер шрифта */
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-   }
-   TH, TD {
-    border: 1.5px solid black; /* Параметры рамки */
-    text-align: center; /* Выравнивание по центру */
-    font-size: 14px; /* Размер шрифта */
-   }
-   TH {
-    background: #212529; /* Цвет фона ячейки */
-    height: 30px; /* Высота ячеек */
-    padding: 0; /* Убираем поля вокруг текста */
-    font-size: 14px; /* Размер шрифта */
-    border: 0px solid black; /* Параметры рамки */
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    padding-right: 5px;
-    padding-left: 5px;
-   }
-   hr {
-    background-color: black; /* Цвет линии */
-    color: #000000; /* Цвет линии для IE6-7 */
-    height: 2px; /* Толщина линии */
-   }
+{% load static %}
+body{
+font-size: 14px;
+}
+h3 {
+font-weight: 700;
+font-size: 18px;
+font-family: system-ui;
+}
+h4 {
+font-family: system-ui;
+}
+h6 {
+font-weight: normal;
+font-size: 14px;
+font-family: system-ui;
+}
+A {
+color: #000000; /* Цвет текста */
+font-size: 14px;
+font-family: system-ui;
+}
+#textarea_main {
+background: #FFF0E2; /* Цвет фона */
+border: 2px solid #000000; /* Параметры рамки */
+width: 100%; /* Ширина */
+height: 320px; /* Высота */
+border-bottom-right-radius: 15px;
+border-top-right-radius: 15px;
+box-sizing: border-box; /* Алгоритм расчёта ширины */
+font-size: 14px; /* Размер шрифта */
+font-family: system-ui;
+resize: none;
+}
+#textarea_main_user {
+background: #FFF0E2; /* Цвет фона */
+border: 2px solid #000000; /* Параметры рамки */
+width: 100%; /* Ширина */
+height: 320px; /* Высота */
+border-bottom-right-radius: 15px;
+border-top-right-radius: 15px;
+box-sizing: border-box; /* Алгоритм расчёта ширины */
+font-size: 14px; /* Размер шрифта */
+font-family: system-ui;
+resize: none;
+}
+#textarea_message {
+background: #FFDAB9; /* Цвет фона */
+border: 2px solid #000000; /* Параметры рамки */
+width: 100%; /* Ширина */
+height: 320px; /* Высота */
+box-sizing: border-box; /* Алгоритм расчёта ширины */
+font-size: 14px; /* Размер шрифта */
+font-family: system-ui;
+}
+TABLE {
+border-collapse: collapse; /* Убираем двойные линии между ячейками */
+width: 90%; /* Ширина таблицы */
+font-size: 14px; /* Размер шрифта */
+padding-top: 5px;
+padding-right: 5px;
+padding-bottom: 5px;
+padding-left: 5px;
+}
+TH, TD {
+border: 1.5px solid black; /* Параметры рамки */
+text-align: center; /* Выравнивание по центру */
+font-size: 14px; /* Размер шрифта */
+}
+TH {
+background: #212529; /* Цвет фона ячейки */
+height: 30px; /* Высота ячеек */
+padding: 0; /* Убираем поля вокруг текста */
+font-size: 14px; /* Размер шрифта */
+border: 0px solid black; /* Параметры рамки */
+border-top-left-radius: 15px;
+border-top-right-radius: 15px;
+padding-right: 5px;
+padding-left: 5px;
+}
+hr {
+background-color: black; /* Цвет линии */
+color: #000000; /* Цвет линии для IE6-7 */
+height: 2px; /* Толщина линии */
+}
 
 .box_block {
   margin: 0px;
@@ -174,4 +174,12 @@
   height: var(--item-height);
 }
 
-
+.board-item6 {
+  font-size: 14px;
+  background-color: #888786a9;
+  border: 1px solid #000000;
+  padding: 5px;
+  margin-bottom: 0.5em;
+  width: var(--item-width);
+  height: var(--item-height);
+}

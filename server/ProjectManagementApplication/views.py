@@ -28,7 +28,7 @@ def index(request):
         taskListStoped = Task.objects.filter(idExecutor=user.id, state="Приостановлена")
         taskListAccompaniment = Task.objects.filter(idExecutor=user.id, state="Сопровождение")
         taskListCompleted = Task.objects.filter(idExecutor=user.id, state="Сделана")
-        taskList = Task.objects.filter(idExecutor=user.id)
+        taskList = Task.objects.filter(idExecutor=user.id).exclude(state="В планах")
         paginator = Paginator(taskList, 20)
         pageNumber = request.GET.get('page')
         pageObj = paginator.get_page(pageNumber)
@@ -75,14 +75,32 @@ def editVisual0(request):
     user.save()
     return HttpResponseRedirect("/")
 def editVisual1(request):
-        name = request.session['name']
-        login = request.session['login']
-        tag = request.session['tag']
-        form = MainSpaceForm()
-        user = User.objects.get(login=request.session['login'])
-        user.visual = 1
-        user.save()
-        return HttpResponseRedirect("/")
+    name = request.session['name']
+    login = request.session['login']
+    tag = request.session['tag']
+    form = MainSpaceForm()
+    user = User.objects.get(login=request.session['login'])
+    user.visual = 1
+    user.save()
+    return HttpResponseRedirect("/")
+def editVisualAll0(request, id):
+    name = request.session['name']
+    login = request.session['login']
+    tag = request.session['tag']
+    form = MainSpaceForm()
+    user = User.objects.get(login=request.session['login'])
+    user.visual = 0
+    user.save()
+    return HttpResponseRedirect("/projects/tasks/"+ str(id) +"/")
+def editVisualAll1(request, id):
+    name = request.session['name']
+    login = request.session['login']
+    tag = request.session['tag']
+    form = MainSpaceForm()
+    user = User.objects.get(login=request.session['login'])
+    user.visual = 1
+    user.save()
+    return HttpResponseRedirect("/projects/tasks/"+ str(id) +"/")
 #КонецВизуалТаблиц
 
 #Регистарция
@@ -457,18 +475,20 @@ def taskForm(request, id):
     if (len(messageList) == 0):
         msgState = 0
     userList = User.objects.all()
-    taskList = Task.objects.filter(idProject=id) & Task.objects.exclude(state="Сделана")
-    completedTasksList = Task.objects.filter(idProject=id) & Task.objects.filter(state="Сделана")
-    paginator = Paginator(taskList, 20)
-    pageNumber = request.GET.get('page')
-    pageObj = paginator.get_page(pageNumber)
+    taskListInDream = Task.objects.filter(idProject=id, state="В планах")
+    taskListAccepted = Task.objects.filter(idProject=id, state="Принята")
+    taskListInWork = Task.objects.filter(idProject=id, state="В работе")
+    taskListStoped = Task.objects.filter(idProject=id, state="Приостановлена")
+    taskListAccompaniment = Task.objects.filter(idProject=id, state="Сопровождение")
+    taskListCompleted = Task.objects.filter(idProject=id, state="Сделана")
+    taskList = Task.objects.filter(idProject=id)
     project = Project.objects.get(id = id)
     projectTitle = project.title
-    paginator1 = Paginator(completedTasksList, 20)
-    pageNumber1 = request.GET.get('page')
-    pageObj1 = paginator1.get_page(pageNumber1)
     return render(request, "tasks.html",
-                      {"tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "messageList": messageList, "msgState": msgState, "tasks": taskList, "id": id, "pageObj": pageObj, "userList": userList, "completedTasksList": completedTasksList, "pageObj1": pageObj1, "projectTitle": projectTitle})
+                      {"tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "messageList": messageList, 
+                       "msgState": msgState, "taskList": taskList, "id": id, "userList": userList, "projectTitle": projectTitle, "visual": user.visual, 
+                       "taskListAccepted": taskListAccepted, "taskListInWork": taskListInWork,"taskListStoped": taskListStoped, "taskListCompleted": taskListCompleted, 
+                       "taskListAccompaniment": taskListAccompaniment, "taskListInDream": taskListInDream})
 
 def newTaskForm(request, id):
     user=User.objects.get(login=request.session['login'])
@@ -493,7 +513,7 @@ def newTaskForm(request, id):
         task.dateStart = request.POST.get("dateStart")
         task.dateEnd = request.POST.get("dateEnd")
         task.titleProject = project.title
-        task.state = "Принята"
+        task.state = "В планах"
         task.link = request.POST.get("link")
         task.description = request.POST.get("description")
         executor = User.objects.get(name=request.POST.get("Исполнитель"))
@@ -706,6 +726,15 @@ def mainUserSaveEditTask1(request, id, state):
         return HttpResponseRedirect("/")
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
+    
+def tasksSaveEditTask(request, id, state):
+    try:
+        task = Task.objects.get(id=id)
+        task.state = state
+        task.save()
+        return HttpResponseRedirect("/projects/tasks/"+ str(task.idProject) +"/")
+    except Task.DoesNotExist:
+        return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 
 def deleteTask(request, id):
     try:
@@ -725,96 +754,6 @@ def deleteTaskMain(request, id):
     except Task.DoesNotExist:
         return HttpResponseNotFound("<h2>Задача не найдена</h2>")
 #КонецДействияСЗадачами
-
-#Контроль
-def tasksUnderControlForm(request):
-    try:
-        userList = User.objects.all()
-        name = request.session['name']
-        login = request.session['login']
-        tag = request.session['tag']
-        messageList = list()
-        form = MainSpaceForm()
-        user = User.objects.get(login=request.session['login'])
-        visual = user.visual
-        taskListAccepted = Task.objects.filter(idResponsible=user.id, state="Принята")
-        taskListInWork = Task.objects.filter(idResponsible=user.id, state="В работе")
-        taskListStoped = Task.objects.filter(idResponsible=user.id, state="Приостановлена")
-        taskListAccompaniment = Task.objects.filter(idResponsible=user.id, state="Сопровождение")
-        taskListCompleted = Task.objects.filter(idResponsible=user.id, state="Сделана")
-        taskList = Task.objects.filter(idResponsible=user.id)
-        paginator = Paginator(taskList, 20)
-        pageNumber = request.GET.get('page')
-        pageObj = paginator.get_page(pageNumber)
-        msgState = 1
-        messages = Message.objects.filter(idUserRecipient=user.id).exclude(idUser=user.id)
-        for msg in messages:
-            if (msg.messageStatus == 0):
-                messageList.append(msg)
-        if (len(messageList) == 0):
-            msgState = 0
-    except:
-        request.session['name'] = 'Неавторизованный пользователь'
-        request.session['login'] = "none"
-        request.session['tag'] = "guest"
-        visual = 0
-        msgState = 0
-        tag = request.session['tag']
-        form = None
-        login = request.session['login']
-        name = request.session['name']
-        taskListAccepted = None
-        taskListInWork = None
-        taskListStoped = None
-        msgState = 0
-        messages = None
-        taskListAccompaniment = None
-        taskListCompleted = None
-        taskList = None
-        pageObj = None
-    return render(request, "pmPage.html", {"tag": tag, "name": name, "login": login, "visual": visual, "form": form, "tasks": taskList, "pageObj": pageObj, "userList": userList, "taskListAccepted": taskListAccepted, "taskListInWork": taskListInWork, "taskListStoped": taskListStoped, "taskListCompleted": taskListCompleted, "taskListAccompaniment": taskListAccompaniment, "messageList": messageList, "msgState": msgState})
-
-def controlUserSaveEditTask1(request, id, state):
-    try:
-        task = Task.objects.get(id=id)
-        task.state = state
-        task.save()
-        return HttpResponseRedirect("/tasksUnderControl/")
-    except Task.DoesNotExist:
-        return HttpResponseNotFound("<h2>Задача не найдена</h2>")
-
-def controlSaveEditTask(request, id, state, executorId):
-    try:
-        task = Task.objects.get(id=id)
-        task.state = state
-        user = User.objects.get(id=executorId)
-        task.idExecutor = executorId
-        task.executorName = user.name
-        task.save()
-        return HttpResponseRedirect("/tasksUnderControl/")
-    except Task.DoesNotExist:
-        return HttpResponseNotFound("<h2>Задача не найдена</h2>")
-
-def editVisualTask0(request):
-    name = request.session['name']
-    login = request.session['login']
-    tag = request.session['tag']
-    form = MainSpaceForm()
-    user = User.objects.get(login=request.session['login'])
-    user.visual = 0
-    user.save()
-    return HttpResponseRedirect("/tasksUnderControl/")
-
-def editVisualTask1(request):
-    name = request.session['name']
-    login = request.session['login']
-    tag = request.session['tag']
-    form = MainSpaceForm()
-    user = User.objects.get(login=request.session['login'])
-    user.visual = 1
-    user.save()
-    return HttpResponseRedirect("/tasksUnderControl/")
-#КонецКонтроль
 
 #Сообщения
 def saveMessage(request, id, idUser, message):
@@ -864,11 +803,16 @@ def statistics(request):
             messageList.append(msg)
     if (len(messageList) == 0):
         msgState = 0
-    projectCount = Project.objects.all().count()
-    projectAcceptedCount = Project.objects.filter(state="Принят").count()
-    projectInWorkCount = Project.objects.filter(state="В работе").count()
-    projectReadyCount = Project.objects.filter(state="Сдан").count()
-    projectStopCount = Project.objects.filter(state="Приостановлен").count()
+    projects = Project.objects.all()
+    projectsAccepted = Project.objects.filter(state="Принят")
+    projectsInWork = Project.objects.filter(state="В работе")
+    projectsReady = Project.objects.filter(state="Сдан")
+    projectsStop = Project.objects.filter(state="Приостановлен")
+    taskListProjects = {}
+    for project in projects:
+        taskListProjects[project.id] = [Task.objects.filter(titleProject=project.title, state="В планах").count(), Task.objects.filter(titleProject=project.title, state="Принята").count(),
+                                           Task.objects.filter(titleProject=project.title, state="В работе").count(), Task.objects.filter(titleProject=project.title, state="Сопровождение").count(),
+                                           Task.objects.filter(titleProject=project.title, state="Приостановлена").count(), Task.objects.filter(titleProject=project.title, state="Сделана").count()]
 
     taskCount = Task.objects.all().count()
     taskAcceptedCount = Task.objects.filter(state="Принята").count()
@@ -878,8 +822,9 @@ def statistics(request):
     taskReadyCount = Task.objects.filter(state="Сделана").count()
     return render(request, "statistics.html",
                   {"tag": request.session['tag'],  "name": request.session['name'], "login": request.session['login'],
-                   "projectCount": projectCount, "projectAcceptedCount": projectAcceptedCount, "projectInWorkCount": projectInWorkCount,
-                   "projectReadyCount": projectReadyCount, "projectStopCount": projectStopCount,  "taskCount": taskCount,
+                   "projects": projects, "projectsAccepted": projectsAccepted, "projectsInWork": projectsInWork,
+                   "projectsReady": projectsReady, "projectsStop": projectsStop, "taskListProjects": taskListProjects,
+                   "projectCount": projects.count(), "taskCount": taskCount,
                    "taskAcceptedCount": taskAcceptedCount, "taskInWorkCount": taskInWorkCount, "taskStopCount": taskStopCount,
                    "taskAccompanimentCount": taskAccompanimentCount, "taskReadyCount": taskReadyCount, "messageList": messageList, "msgState": msgState})
 #КонецСтатистика

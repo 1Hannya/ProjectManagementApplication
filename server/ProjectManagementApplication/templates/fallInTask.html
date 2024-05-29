@@ -65,8 +65,19 @@
                         <tr>
                           <th style="border: 0px; text-align: left;"><label>Статус:</label></th>
                           <td style="border: 0px;">
+                            {% if task.state == "В планах"%}
+                              <select style="width: 100%" name="state">
+                                <option selected value="В планах">В планах</option>
+                                <option value="Принята">Принята</option>
+                                <option value="В работе">В работе</option>
+                                <option value="Сопровождение">Сопровождение</option>
+                                <option value="Приостановлена">Приостановлена</option>
+                                <option value="Сделана">Сделана</option>
+                              </select>
+                              {% endif %}
                               {% if task.state == "Принята"%}
                               <select style="width: 100%" name="state">
+                                <option value="В планах">В планах</option>
                                 <option selected value="Принята">Принята</option>
                                 <option value="В работе">В работе</option>
                                 <option value="Сопровождение">Сопровождение</option>
@@ -76,6 +87,7 @@
                               {% endif %}
                               {% if task.state == "В работе"%}
                               <select style="width: 100%" name="state">
+                                <option value="В планах">В планах</option>
                                 <option value="Принята">Принята</option>
                                 <option selected value="В работе">В работе</option>
                                 <option value="Сопровождение">Сопровождение</option>
@@ -85,6 +97,7 @@
                               {% endif %}
                               {% if task.state == "Сопровождение"%}
                               <select style="width: 100%" name="state">
+                                <option value="В планах">В планах</option>
                                 <option value="Принята">Принята</option>
                                 <option value="В работе">В работе</option>
                                 <option selected value="Сопровождение">Сопровождение</option>
@@ -94,6 +107,7 @@
                               {% endif %}
                               {% if task.state == "Приостановлена"%}
                               <select style="width: 100%" name="state">
+                                <option value="В планах">В планах</option>
                                 <option value="Принята">Принята</option>
                                 <option value="В работе">В работе</option>
                                 <option value="Сопровождение">Сопровождение</option>
@@ -103,6 +117,7 @@
                               {% endif %}
                               {% if task.state == "Сделана"%}
                               <select style="width: 100%" name="state">
+                                <option value="В планах">В планах</option>
                                 <option value="Принята">Принята</option>
                                 <option value="В работе">В работе</option>
                                 <option value="Сопровождение">Сопровождение</option>

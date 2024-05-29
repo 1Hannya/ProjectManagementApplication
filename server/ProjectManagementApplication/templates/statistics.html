@@ -1,4 +1,4 @@
-{% extends "baseForm.html" %}
+{% extends "base.html" %}
 {% block title %}ManagementPro - Ваши задачи{% endblock title %}
 
 {% block content %}
@@ -16,33 +16,51 @@
 <div align="center">
     <br>
     <h3>Статистические показатели</h3>
-    <div class="container">
+    <div class="container-fluid">
          <div align="center">
              <br>
-             <label style="font-size: 16px"><b>Проекты</b></label>
+             <label style="font-size: 16px"><b>Проекты (всего: {{projectCount}})</b></label>
          </div>
             <table style="width: 30%" class="table">
               <tbody>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">Всего проектов:</label></th>
-                  <td style="border: 0px;">{{projectCount}}</td>
-                </tr>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Принят":</label></th>
-                  <td style="border: 0px;">{{projectAcceptedCount}}/{{projectCount}}</td>
-                </tr>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "В работе":</label></th>
-                  <td style="border: 0px;">{{projectInWorkCount}}/{{projectCount}}</td>
-                </tr>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Сдан":</label></th>
-                  <td style="border: 0px;">{{projectReadyCount}}/{{projectCount}}</td>
-                </tr>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Приостановлен":</label></th>
-                  <td style="border: 0px;">{{projectStopCount}}/{{projectCount}}</td>
-                </tr>
+                <div class="table-responsive">
+                  <table class="table-dark table-responsive">
+                      <thead>
+                      <th>Проекты</th>
+                      <th style="background: none;"></th>
+                      <th>Задачи</th>
+                      </thead>
+                      <thead>
+                      <th>Наименование<br>проекта</th>
+                      <th>Статус</th>
+                      <th>Количество задач<br>в статусе "В планах"</th>
+                      <th>Количество задач<br>в статусе "Приняты"</th>
+                      <th>Количество задач<br>в статусе "В работе"</th>
+                      <th>Количество задач<br>в статусе "Сопровождение"</th>
+                      <th>Количество задач<br>в статусе "Приостановлены"</th>
+                      <th>Количество задач<br>в статусе "Сделаны"</th>
+                      </thead>
+                      {% for project in projects %}
+                      <tr class="table-light">
+                        <td>{{ project.title }}</td>
+                        <td>{{ project.state }}</td>
+                        {% for key, value in taskListProjects.items %}
+                            {% if key == project.id %}
+                            <td>{{ value.0 }}</td>
+                            <td>{{ value.1 }}</td>
+                            <td>{{ value.2 }}</td>
+                            <td>{{ value.3 }}</td>
+                            <td>{{ value.4 }}</td>
+                            <td>{{ value.5 }}</td>
+                            {% endif %}
+                        {% endfor %}
+                      </tr>
+                      {% endfor %}
+                  </table>
+                </div>
+                {% if upcomingTasksList.count == 0 %}
+                <h6>Приближающихся заданий пока нет</h6>
+                {% endif %}
               </tbody>
             </table>
 
