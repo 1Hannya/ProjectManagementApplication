@@ -19,7 +19,6 @@
             {% if taskList.count > 0 %}
             <br>
             <h3>Задачи для проекта {{ projectTitle }}: <a class="btn btn-dark" href="/projects/newTask/{{id}}">Создать задачу</a></h3>
-            <br>
                 {% if visual == 0%}
                 <section>
                     <a href="/editVisualAll0/{{id}}">Доска</a> / <a href="/editVisualAll1/{{id}}">Таблица</a>
@@ -252,8 +251,8 @@
                                     <th>Задача<br>(нажмите чтобы открыть)</th>
                                     <th>Описание</th>
                                     <th>Исполнитель</th>
-                                    <th>Дата<br>начала</th>
-                                    <th>Дата<br>окончания</th>
+                                    <th>Триггер<br>начала</th>
+                                    <th>Триггер<br>окончания</th>
                                     <th>Ответственный</th>
                                     <th>Проект</th>
                                     <th>Ссылки</th>

@@ -18,8 +18,27 @@
     <h3>Статистические показатели</h3>
     <div class="container-fluid">
          <div align="center">
-             <br>
-             <label style="font-size: 16px"><b>Проекты (всего: {{projectCount}})</b></label>
+             <label style="font-size: 16px"><b>Проекты (всего: {{projectsCount}})</b></label>
+             <table style="width: 30%" class="table">
+              <tbody>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Принят":</label></th>
+                  <td style="border: 0px;">{{projectsAcceptedCount}}/{{projectsCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "В работе":</label></th>
+                  <td style="border: 0px;">{{projectsInWorkCount}}/{{projectsCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Приостановлен":</label></th>
+                  <td style="border: 0px;">{{projectsStopCount}}/{{projectsCount}}</td>
+                </tr>
+                <tr>
+                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Сдан":</label></th>
+                  <td style="border: 0px;">{{projectsReadyCount}}/{{projectsCount}}</td>
+                </tr>
+              </tbody>
+            </table>
          </div>
             <table style="width: 30%" class="table">
               <tbody>
@@ -27,18 +46,19 @@
                   <table class="table-dark table-responsive">
                       <thead>
                       <th>Проекты</th>
-                      <th style="background: none;"></th>
-                      <th>Задачи</th>
+                      <th style="background: none; border-top-left-radius: 0px; border-top-right-radius: 0px;"></th>
+                      <th style="background: #444a51; border-top-left-radius: 15px; border-top-right-radius: 15px;">Задачи (колич.)</th>
                       </thead>
                       <thead>
-                      <th>Наименование<br>проекта</th>
-                      <th>Статус</th>
-                      <th>Количество задач<br>в статусе "В планах"</th>
-                      <th>Количество задач<br>в статусе "Приняты"</th>
-                      <th>Количество задач<br>в статусе "В работе"</th>
-                      <th>Количество задач<br>в статусе "Сопровождение"</th>
-                      <th>Количество задач<br>в статусе "Приостановлены"</th>
-                      <th>Количество задач<br>в статусе "Сделаны"</th>
+                      <th style="border-top-left-radius: 0px; border-top-right-radius: 0px;">Наименование</th>
+                      <th style="border-top-left-radius: 0px; border-top-right-radius: 0px;">Статус</th>
+                      <th style="border: 1px solid black; background: #444a51; border-top-left-radius: 0px; border-top-right-radius: 0px;">всего</th>
+                      <th style="border: 1px solid black; background: #444a51; border-top-left-radius: 0px; border-top-right-radius: 0px;">в статусе "В планах"</th>
+                      <th style="border: 1px solid black; background: #444a51; border-top-left-radius: 0px; border-top-right-radius: 0px;">в статусе "Приняты"</th>
+                      <th style="border: 1px solid black; background: #444a51; border-top-left-radius: 0px; border-top-right-radius: 0px;">в статусе "В работе"</th>
+                      <th style="border: 1px solid black; background: #444a51; border-top-left-radius: 0px; border-top-right-radius: 0px;">в статусе "Сопровождение"</th>
+                      <th style="border: 1px solid black; background: #444a51; border-top-left-radius: 0px; border-top-right-radius: 0px;">в статусе "Приостановлены"</th>
+                      <th style="background: #444a51; border-top-left-radius: 0px; border-top-right-radius: 15px;">в статусе "Сделаны"</th>
                       </thead>
                       {% for project in projects %}
                       <tr class="table-light">
@@ -52,53 +72,17 @@
                             <td>{{ value.3 }}</td>
                             <td>{{ value.4 }}</td>
                             <td>{{ value.5 }}</td>
+                            <td>{{ value.6 }}</td>
                             {% endif %}
                         {% endfor %}
                       </tr>
                       {% endfor %}
                   </table>
                 </div>
-                {% if upcomingTasksList.count == 0 %}
-                <h6>Приближающихся заданий пока нет</h6>
-                {% endif %}
-              </tbody>
-            </table>
-
-        <br>
-        <div align="center">
-             <label style="font-size: 16px"><b>Задачи</b></label>
-         </div>
-            <table style="width: 30%" class="table">
-              <tbody>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">Всего задач:</label></th>
-                  <td style="border: 0px;">{{taskCount}}</td>
-                </tr>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Принята":</label></th>
-                  <td style="border: 0px;">{{taskAcceptedCount}}/{{taskCount}}</td>
-                </tr>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "В работе":</label></th>
-                  <td style="border: 0px;">{{taskInWorkCount}}/{{taskCount}}</td>
-                </tr>
-              <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Сопровождение":</label></th>
-                  <td style="border: 0px;">{{taskAccompanimentCount}}/{{taskCount}}</td>
-                </tr>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Приостановлена":</label></th>
-                  <td style="border: 0px;">{{taskStopCount}}/{{taskCount}}</td>
-                </tr>
-                <tr>
-                  <th style="border: 0px; text-align: left;"><label style="font-size: 14px; font-weight: normal;">В статусе "Сделана":</label></th>
-                  <td style="border: 0px;">{{taskReadyCount}}/{{taskCount}}</td>
-                </tr>
               </tbody>
             </table>
     </div>
 </div>
 </section>
 {% endif %}
-
 {% endblock content %}

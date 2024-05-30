@@ -810,7 +810,7 @@ def statistics(request):
     projectsStop = Project.objects.filter(state="Приостановлен")
     taskListProjects = {}
     for project in projects:
-        taskListProjects[project.id] = [Task.objects.filter(titleProject=project.title, state="В планах").count(), Task.objects.filter(titleProject=project.title, state="Принята").count(),
+        taskListProjects[project.id] = [Task.objects.filter(titleProject=project.title).count(), Task.objects.filter(titleProject=project.title, state="В планах").count(), Task.objects.filter(titleProject=project.title, state="Принята").count(),
                                            Task.objects.filter(titleProject=project.title, state="В работе").count(), Task.objects.filter(titleProject=project.title, state="Сопровождение").count(),
                                            Task.objects.filter(titleProject=project.title, state="Приостановлена").count(), Task.objects.filter(titleProject=project.title, state="Сделана").count()]
 
@@ -822,9 +822,9 @@ def statistics(request):
     taskReadyCount = Task.objects.filter(state="Сделана").count()
     return render(request, "statistics.html",
                   {"tag": request.session['tag'],  "name": request.session['name'], "login": request.session['login'],
-                   "projects": projects, "projectsAccepted": projectsAccepted, "projectsInWork": projectsInWork,
-                   "projectsReady": projectsReady, "projectsStop": projectsStop, "taskListProjects": taskListProjects,
-                   "projectCount": projects.count(), "taskCount": taskCount,
+                   "projects": projects, "projectsAcceptedCount": projectsAccepted.count(), "projectsInWorkCount": projectsInWork.count(),
+                   "projectsReadyCount": projectsReady.count(), "projectsStopCount": projectsStop.count(), "taskListProjects": taskListProjects,
+                   "projectsCount": projects.count(), "taskCount": taskCount,
                    "taskAcceptedCount": taskAcceptedCount, "taskInWorkCount": taskInWorkCount, "taskStopCount": taskStopCount,
                    "taskAccompanimentCount": taskAccompanimentCount, "taskReadyCount": taskReadyCount, "messageList": messageList, "msgState": msgState})
 #КонецСтатистика
