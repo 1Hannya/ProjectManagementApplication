@@ -401,8 +401,12 @@ def newProjectForm(request):
         project.state = "Принят"
         project.link = request.POST.get("link")
         project.description = request.POST.get("description")
-        project.save()
-    return HttpResponseRedirect("/projects/")
+        if "@" in request.POST.get("email"):
+            project.save()
+            return HttpResponseRedirect("/projects/")
+        else:
+            errorMsg = "Проверьте, указан ли домен в поле \"E-mail\""
+            return render(request, "newProject.html", {"form": form, "tag": request.session['tag'], "name": request.session['name'], "messageList": messageList, "msgState": msgState, "login": request.session['login'], "errorMsg": errorMsg})
 
 def editProject(request, id):
     if request.session['login'] == "none":

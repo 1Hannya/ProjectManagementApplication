@@ -14,22 +14,22 @@
     <form method="POST" action="{% url 'newProjectForm' %}" class="form">
         {% csrf_token %}
         <div align="center" class="container"><br>
-            <h3 style="font-size: 18px">Для создания нового проекта заполните следующие поля:</h3>
-            <br>
-        <table align="center">
-          <tbody>
-          {% for field in form %}
-            <tr>
-              <td style="font-size: 14px"><b>{{field.label_tag}}</b></td>
-              <td>{{field}}</td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-            <br>
-        <input type="submit" class="btn btn-sm btn-dark" value="Создать проект" >
-            <br>
-            <br>
+              <h3 style="font-size: 18px">Для создания нового проекта заполните следующие поля:</h3>
+              <br>
+          <table align="center">
+            <tbody>
+            {% for field in form %}
+              <tr>
+                <td style="font-size: 14px"><b>{{field.label_tag}}</b></td>
+                <td>{{field}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <div class="w-45 mx-auto">
+            <pre style="font-size: 14px; color: red;">{{ errorMsg }}</pre>
+          </div>
+          <input type="submit" class="btn btn-sm btn-dark" value="Создать проект" >
         </div>
     </form>
 {% endif %}
