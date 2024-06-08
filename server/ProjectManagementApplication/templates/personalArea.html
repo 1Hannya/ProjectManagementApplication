@@ -19,41 +19,41 @@
 <div>
     <div class="w-35 mx-auto">
         <label style="font-size: 14px">Ваш логин: </label><br>
-        <input style="font-size: 14px"  type="text" name="login" value = "{{user.login}}" />
+        <input style="font-size: 14px" type="text" name="login" maxlength="20" value = "{{user.login}}" />
     </div>
     <div class="w-35 mx-auto">
         <label style="font-size: 14px">Ваше имя: </label><br>
-        <input style="font-size: 14px" type="text" name="name" value = "{{user.name}}" />
+        <input style="font-size: 14px" type="text" name="name" maxlength="100" value = "{{user.name}}" />
     </div>
     <div class="w-35 mx-auto">
       <label style="font-size: 14px">Телефон: </label><br>
-        <input style="font-size: 14px" type="text" name="number" value = "{{user.number}}" />
+        <input style="font-size: 14px" type="text" name="number" min="6" maxlength="11" value = "{{user.number}}" />
     </div>
     <div class="w-35 mx-auto">
         <label style="font-size: 14px">E-mail: </label><br>
-        <input style="font-size: 14px" type="text" name="email" value = "{{user.email}}" />
+        <input style="font-size: 14px" type="text" name="email" maxlength="254" value = "{{user.email}}" />
     </div>
     <div class="w-35 mx-auto">
         <label style="font-size: 14px">Дата рождения: </label><br>
-        <input style="font-size: 14px" type="text" name="birthday" value = "{{user.birthday}}" />
+        <input style="font-size: 14px" type="text" name="birthday" maxlength="10" value = "{{user.birthday}}" />
     </div>
     <div class="w-45 mx-auto">
       <label style="font-size: 14px">Пароль: </label><br>
-        <input style="font-size: 14px" type="password" name="password" value = ""/>
+        <input style="font-size: 14px" type="password" name="password" min="6" maxlength="150" value = ""/>
     </div>
     <div class="w-45 mx-auto">
-        <label style="font-size: 14px; color: red;">{{ errorMsg }}</label><br>
+        <pre style="font-size: 14px; color: red;">{{ errorMsg }}</pre>
     </div>
 </div>
 <div class="w-35 p-2 mx-auto">
-    <input type="submit" class="btn btn-dark" name="user" value="Сохранить" >
+    <input type="submit" class="btn btn-sm btn-dark" name="user" value="Сохранить" >
 </div>
     </form>
 <hr style="color: Black;">
 {% if tag != "Администратор" and tag != "guest" %}
 <form class="text-center" method="POST">
         {% csrf_token %}
-        <a  class="btn btn-dark" href="/tagUsers/">Список пользователей</a>
+        <a  class="btn btn-sm btn-dark" href="/tagUsers/">Список пользователей</a>
 </form>
 {% endif %}
 
@@ -66,10 +66,9 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg">
                 <div>
                     <h3>Действия с пользователями:</h3>
-                    <br>
                 </div>
                 {% if tag == "Администратор"%}
-                    <a class="btn btn-dark" href="/tagUsers/">Список пользователей</a>
+                    <a class="btn btn-sm btn-dark" href="/tagUsers/">Список пользователей</a>
                     <br>
                     <br>
                 {% endif %}
@@ -80,20 +79,20 @@
                 <form method="POST">
                     <h3>Добавление нового тэга для пользователя:</h3>
                     <p>
-                        <label>Название тэга: <input type="text" name="tagName" /> <input class="btn btn-dark" type="submit" value="Добавить" name="tag"></label><br>
+                        <label>Название тэга: <input type="text" name="tagName" maxlength="100"/> <input class="btn btn-sm btn-dark" type="submit" value="Добавить" name="tag"></label><br>
                     </p>
                 </form>
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg" align="center">
                 <form method="POST">
                     <h3>Список доступных тэгов для пользователей:</h3>
-                    <table class="table-dark">
+                    <table class="tag-table table-dark">
                         <thead>
                         <th>Тэг</th>
                         <th>Действие</th>
                         </thead>
                         {% for tag in pageObj %}
-                        <tr  class="table-light">
+                        <tr class="table-light">
                             {% if tag.name == "Администратор" %}
                             <td>{{ tag.name }}</td>
                             <td>Данный тэг невозможно удалить</td>

@@ -20,6 +20,9 @@ color: #000000; /* Цвет текста */
 font-size: 14px;
 font-family: system-ui;
 }
+select {
+  width: 220px; /* Да, это безопасно */
+}
 #textarea_main {
 background: #FFF0E2; /* Цвет фона */
 border: 2px solid #000000; /* Параметры рамки */
@@ -53,9 +56,53 @@ box-sizing: border-box; /* Алгоритм расчёта ширины */
 font-size: 14px; /* Размер шрифта */
 font-family: system-ui;
 }
+.notif-table {
+  border-collapse: collapse; /* Убираем двойные линии между ячейками */
+  font-size: 14px; /* Размер шрифта */
+  width: 90%;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  }
+.tag-table {
+  border-collapse: collapse; /* Убираем двойные линии между ячейками */
+  font-size: 14px; /* Размер шрифта */
+  width: 90%;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  }
+.users-table {
+  border-collapse: collapse; /* Убираем двойные линии между ячейками */
+  font-size: 14px; /* Размер шрифта */
+  width: 90%;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  }
+.projects-table {
+  border-collapse: collapse; /* Убираем двойные линии между ячейками */
+  font-size: 14px; /* Размер шрифта */
+  width: 90%;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  }
+.task-table {
+  border-collapse: collapse; /* Убираем двойные линии между ячейками */
+  font-size: 14px; /* Размер шрифта */
+  width: 90%;
+  padding-top: 2px;
+  padding-right: 2px;
+  padding-bottom: 2px;
+  padding-left: 2px;
+  }
 TABLE {
 border-collapse: collapse; /* Убираем двойные линии между ячейками */
-width: 90%; /* Ширина таблицы */
 font-size: 14px; /* Размер шрифта */
 padding-top: 5px;
 padding-right: 5px;
@@ -64,10 +111,12 @@ padding-left: 5px;
 }
 TH, TD {
 border: 1.5px solid black; /* Параметры рамки */
+vertical-align: top;
 text-align: center; /* Выравнивание по центру */
 font-size: 14px; /* Размер шрифта */
 }
 TH {
+vertical-align: middle;
 background: #212529; /* Цвет фона ячейки */
 height: 30px; /* Высота ячеек */
 padding: 0; /* Убираем поля вокруг текста */

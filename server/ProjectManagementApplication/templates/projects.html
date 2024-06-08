@@ -16,15 +16,15 @@
         <div align="center" class="container-fluid">
         {% if project.count == 0 %}
             <br>
-            <h3>Проекты: <a class="btn btn-dark" href="newProjectForm/">Создать проект</a></h3>
+            <h3>Проекты: <a class="btn btn-sm btn-dark" href="newProjectForm/">Создать проект</a></h3>
             <br>
             <h6>Проектов нет</h6>
         {% endif %}
         {% if project.count > 0 %}
         <br>
-        <h3>Проекты: <a class="btn btn-dark" href="newProjectForm/">Создать проект</a></h3>
+        <h3>Проекты: <a class="btn btn-sm btn-dark" href="newProjectForm/">Создать проект</a></h3>
             <div class="table-responsive">
-            <table class="table-dark table-condensed table-responsive">
+            <table class="projects-table table-dark table-responsive">
                 <thead>
                 <th>Название</th>
                 <th>Имя<br>клиента</th>
@@ -139,7 +139,7 @@
         <br>
         <h3>Завершенные проекты:</h3>
             <div class="table-responsive">
-            <table class="table-dark table-condensed table-responsive">
+            <table class="projects-table table-dark table-responsive">
                 <thead>
                 <th>Название</th>
                 <th>Имя<br>клиента</th>

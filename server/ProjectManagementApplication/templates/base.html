@@ -90,22 +90,20 @@
               <thead>
                 <th>Дата</th>
                 <th>Пользователь</th>
-                <th>Сообщение</th>
                 <th>Действие</th>
               </thead>
                 {% for message in messageList %}
                 <tr class="table-light">
-                    <td>{{ message.date }}</td>
-                    <td>{{ message.userName }}</td>
-                    <td>{{ message.messageText }}</td>
-                    <td><a href="/task/{{message.idTask}}/">Перейти к задаче</a></td>
+                    <td style="border: 1px solid black; padding: 5px 5px 5px 5px;">{{ message.date }}</td>
+                    <td style="border: 1px solid black; padding: 5px 5px 5px 5px;">{{ message.userName }}</td>
+                    <td style="border: 1px solid black; padding: 5px 5px 5px 5px;"><a href="/task/{{message.idTask}}/">Перейти к сообщению</a></td>
                 </tr>
                 {% endfor %}
             </table>
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="w-60 btn btn-dark" data-bs-dismiss="modal">Закрыть</button>
+        <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>

@@ -127,14 +127,15 @@ def registrationForAdmin(request):
                 if str(i.login) == request.POST.get("login"):
                     j = 0
                     break
-            if (user.login != '' and password != '' and user.name != '' and j == 1):
+            if (user.login != '' and password != '' and user.name != '' and '@' in request.POST.get("email") and j == 1):
                 user.password = pbkdf2_sha256.encrypt(password, rounds=12000, salt_size=30)
                 user.save()
                 return HttpResponseRedirect("/personalArea/")
             else:
-                errorMsg = "Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта"
+                errorMsg = "Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта:\n- поле \"ФИО\" осталось пустым\n- поле \"Логин\" осталось пустым\n- поле \"Пароль\" не соответствует требованиям\n- поле \"E-mail\" не содержит домена"
                 return render(request, "registrationForAdmin.html", {"form": form, "tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "errorMsg": errorMsg})
-    return render(request, "registrationForAdmin.html", {"form": form, "tag": request.session['tag'], "name": request.session['name'], "login": request.session['login']})
+    errorMsg = "Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта:\n- поле \"ФИО\" осталось пустым\n- поле \"Логин\" осталось пустым\n- поле \"Пароль\" не соответствует требованиям\n- поле \"E-mail\" не содержит домена"
+    return render(request, "registrationForAdmin.html", {"form": form, "tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "errorMsg": errorMsg})
 
 def registration(request):
     if request.method == "GET":
@@ -159,14 +160,15 @@ def registration(request):
                 if str(i.login) == request.POST.get("login"):
                     j=0
                     break
-            if (user.login != '' and password != '' and user.name != '' and j == 1):
+            if (user.login != '' and password != '' and user.name != '' and '@' in request.POST.get("email") and j == 1):
                 user.password = pbkdf2_sha256.encrypt(password, rounds=12000, salt_size=30)
                 user.save()
                 return HttpResponseRedirect("/personalArea/")
             else:
-                errorMsg = "Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта"
+                errorMsg = "Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта:\n- поле \"ФИО\" осталось пустым\n- поле \"Логин\" осталось пустым\n- поле \"Пароль\" не соответствует требованиям\n- поле \"E-mail\" не содержит домена"
                 return render(request, "registration.html", {"form": form, "tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "errorMsg": errorMsg})
-    return render(request, "registration.html", {"tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "form": form})
+    errorMsg = "Выбранный вами логин уже используется или вы допустили другую ошибку при создании аккаунта:\n- поле \"ФИО\" осталось пустым\n- поле \"Логин\" осталось пустым\n- поле \"Пароль\" не соответствует требованиям\n- поле \"E-mail\" не содержит домена"
+    return render(request, "registration.html", {"tag": request.session['tag'], "name": request.session['name'], "login": request.session['login'], "form": form, "errorMsg": errorMsg})
 
 def validate_login(request):
     login = request.GET.get('login', None)
@@ -235,7 +237,7 @@ def editUser(request):
                     return HttpResponseRedirect("/personalArea/")
                 elif 'user' in request.POST:
                     password = request.POST.get("password")
-                    if (request.POST.get("name") != '' and request.POST.get("login") != '' and password != ''):
+                    if (request.POST.get("name") != '' and request.POST.get("login") != '' and password != '' and len(password) >= 6 and '@' in request.POST.get("email") and len(request.POST.get("number"))>=6):
                         users = User.objects.filter(login__exact = str(request.POST.get("login")))
                         if (len(users) == 0):
                             user.name = request.POST.get("name")
@@ -261,7 +263,7 @@ def editUser(request):
                              errorMsg = "Введенный логин уже занят"
                              return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
                                             "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login'], "errorMsg": errorMsg})
-                    elif (request.POST.get("name") != '' and request.POST.get("login") != '' and password == ''):
+                    elif (request.POST.get("name") != '' and request.POST.get("login") != '' and password == '' and '@' in request.POST.get("email") and len(request.POST.get("number"))>=6):
                         users = User.objects.filter(login__exact  = str(request.POST.get("login")))
                         if (len(users) == 0):
                             user.name = request.POST.get("name")
@@ -286,7 +288,7 @@ def editUser(request):
                             return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
                                         "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login'], "errorMsg": errorMsg})
                     else:
-                        errorMsg = "Введенны некорректные данные"
+                        errorMsg = "Введены некорректные данные:\n- поле \"Ваше имя\" осталось пустым\n- поле \"Ваш логин\" осталось пустым\n- поле \"Пароль\" не соответствует требованиям\n- поле \"E-mail\" не содержит домена"
                         return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
                                     "name": request.session['name'],  "messageList": messageList, "msgState": msgState, "login": request.session['login'], "errorMsg": errorMsg})
                 return render(request, "personalArea.html", {"user": user, "tagList": tagList, "pageObj": pageObj, "tag": request.session['tag'],
@@ -426,14 +428,14 @@ def editProject(request, id):
                 project.number = request.POST.get("number")
                 project.link = request.POST.get("link")
                 project.description = request.POST.get("description")
-                if (project.title != '' and project.dateStart != '' and project.dateEnd != '' and project.clientName != '' and project.email != '' and project.number != '' and project.state != ''):
+                if (project.title != '' and project.dateStart != '' and project.dateEnd != '' and project.clientName != '' and project.email != '' and '@' in request.POST.get("email") and project.number != ''):
                     project.save()
                     tasks = Task.objects.filter(idProject=id)
                     for task in tasks:
                         task.titleProject = project.title
                         task.save()
                 else:
-                    errorMsg = "Введенны некорректные данные"
+                    errorMsg = "Проверьте, все ли поля были заполнены:\n- \"Название проекта\"\n- \"Триггер начала\"\n- \"Триггер окончания\"\n- \"Имя клиента\"\n- \"E-mail клиента\"\n- \"Номер клиента\"\n(проверьте, указан ли домен в поле \"E-mail клиента\")"
                     return render(request, "editProject.html", {"project": project, "name": request.session['name'], "tag": request.session['tag'], "messageList": messageList, "msgState": msgState, "projectTitle": project.title, "errorMsg": errorMsg})
                 return HttpResponseRedirect("/projects/")
             else:
@@ -550,6 +552,7 @@ def fallInTask(request, id):
             if request.method == "POST":
                 if(user.tag == "Администратор"):
                     task.title = request.POST.get("title")
+                    task.dateStart = request.POST.get("dateStart")
                     task.dateEnd = request.POST.get("dateEnd")
                     task.titleProject = project.title
                     task.state = request.POST.get("state")
@@ -560,11 +563,11 @@ def fallInTask(request, id):
                     idUser = executor.id
                     task.idExecutor = executor.id
                     task.idProject = project.id
-                    if (task.title != '' and task.description != '' and task.dateEnd != '' and task.link != ''):
+                    if (task.title != '' and task.description != '' and task.dateStart != '' and task.dateEnd != '' and task.link != ''):
                         task.save()
                         return HttpResponseRedirect("/task/"+str(task.id)+"/")
                     else:
-                        errorMsg = 'Заполните все поля'
+                        errorMsg = "Проверьте, все ли поля были заполнены:\n- \"Задача\"\n- \"Описание\"\n- \"Триггер начала\"\n- \"Триггер окончания\"\n- \"Ссылки\""
                         return render(request, "fallInTask.html", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "messagesChat": messagesChat, "userList": userList, "messageList": messageList, "msgState": msgState, "errorMsg": errorMsg})
                 else:
                     task.link = request.POST.get("link")
@@ -573,7 +576,7 @@ def fallInTask(request, id):
                         task.save()
                         return HttpResponseRedirect("/task/"+str(task.id)+"/")
                     else:
-                        errorMsg = 'Заполните все поля'
+                        errorMsg = "Проверьте, все ли поля были заполнены:\n- \"Ссылки\""
                         return render(request, "fallInTask.html", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "messagesChat": messagesChat, "userList": userList, "messageList": messageList, "msgState": msgState, "errorMsg": errorMsg})
             else:
                 return render(request, "fallInTask.html", {"task": task, "tag": request.session['tag'],"name": request.session['name'], "login": request.session['login'], "idUser": idUser, "messagesChat": messagesChat, "userList": userList, "messageList": messageList, "msgState": msgState, "errorMsg": errorMsg})

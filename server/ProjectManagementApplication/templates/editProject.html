@@ -15,39 +15,44 @@
       {% csrf_token %}
       <div align="center" class="container-fluid">
           <br>
-      <h3>Изменение проекта {{projectTitle}}</h3>
+          <h3>Изменение проекта {{projectTitle}}</h3>
           <br>
       </div>
-<div align="center" class="w-25 p-0.5 mx-auto">
+<div align="center">
+  <div class ="row">
+    <div class="col-3">
+
+    </div>
+    <div class="col-6">
         <table class="table">
   <tbody>
     <tr>
       <th style="border: 0px; text-align: left;"><label>Название проекта:</label></th>
-      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="title" value = "{{project.title}}" /></td>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" maxlength="150" class="container-fluid" type="text" name="title" value = "{{project.title}}" /></td>
     </tr>
     <tr>
       <th style="border: 0px; text-align: left;"><label>Описание:</label></th>
       <td style="border: 0px;"><textarea style="border-radius:5px; border:1px solid;" class="container-fluid" name="description">{{project.description}}</textarea></td>
     </tr>
     <tr>
-      <th style="border: 0px; text-align: left;"><label>Дата начала:</label></th>
-      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="dateStart" value = "{{project.dateStart}}" /></td>
+      <th style="border: 0px; text-align: left;"><label>Триггер начала:</label></th>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" maxlength="10" class="container-fluid" type="text" name="dateStart" value = "{{project.dateStart}}" /></td>
     </tr>
   <tr>
-      <th style="border: 0px; text-align: left;"><label>Дата окончания:</label></th>
-      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="dateEnd" value = "{{project.dateEnd}}" /></td>
+      <th style="border: 0px; text-align: left;"><label>Триггер окончания:</label></th>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" maxlength="10" class="container-fluid" type="text" name="dateEnd" value = "{{project.dateEnd}}" /></td>
     </tr>
   <tr>
       <th style="border: 0px; text-align: left;"><label>Имя клиента:</label></th>
-      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="clientName" value = "{{project.clientName}}" /></td>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" maxlength="100" class="container-fluid" type="text" name="clientName" value = "{{project.clientName}}" /></td>
     </tr>
   <tr>
       <th style="border: 0px; text-align: left;"><label>E-mail клиента:</label></th>
-      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="email" value = "{{project.email}}" /></td>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" maxlength="254" class="container-fluid" type="text" name="email" value = "{{project.email}}" /></td>
     </tr>
   <tr>
      <th style="border: 0px; text-align: left;"><label>Номер клиента:</label></th>
-      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" class="container-fluid" type="text" name="number" value = "{{project.number}}" /></td>
+      <td style="border: 0px;"><input style="border-radius:5px; border:1px solid;" maxlength="11" class="container-fluid" type="text" name="number" value = "{{project.number}}" /></td>
     </tr>
   <tr>
       <th style="border: 0px; text-align: left;"><label>Ссылки:</label></th>
@@ -55,10 +60,13 @@
     </tr>
   </tbody>
 </table>
-    <label style="color: red;">{{errorMsg}}</label>
-    <br>
-    <br>
-    <input style="font-size: 16px" type="submit" class="btn btn-dark" value="Сохранить" >
+    <pre style="color: red;">{{errorMsg}}</pre>
+    <input style="font-size: 16px" type="submit" class="btn btn-sm btn-dark" value="Сохранить" >
+    </div>
+    <div class="col-3">
+
+    </div>
+    </div>
 </div>
     </form>
 {% endif %}

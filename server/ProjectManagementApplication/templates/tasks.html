@@ -12,13 +12,13 @@
         <div align="center" class="container-fluid">
             {% if taskList.count == 0 %}
             <br>
-            <h3>Задачи для проекта {{ projectTitle }}: <a class="btn btn-dark" href="/projects/newTask/{{id}}">Создать задачу</a></h3>
+            <h3>Задачи для проекта {{ projectTitle }}: <a class="btn btn-sm btn-dark" href="/projects/newTask/{{id}}">Создать задачу</a></h3>
             <br>
             <h6>Для данного проекта список задач пуст</h6>
             {% endif %}
             {% if taskList.count > 0 %}
             <br>
-            <h3>Задачи для проекта {{ projectTitle }}: <a class="btn btn-dark" href="/projects/newTask/{{id}}">Создать задачу</a></h3>
+            <h3>Задачи для проекта {{ projectTitle }}: <a class="btn btn-sm btn-dark" href="/projects/newTask/{{id}}">Создать задачу</a></h3>
                 {% if visual == 0%}
                 <section>
                     <a href="/editVisualAll0/{{id}}">Доска</a> / <a href="/editVisualAll1/{{id}}">Таблица</a>
@@ -38,7 +38,7 @@
                                     {% for tasks in taskListInDream %}
                                     <div class="board-item6">
                                     <div>
-                                        <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                        <p>Задача: <a href="/task/{{tasks.id}}/">{{ tasks.title }}</a></p>
                                         <p>Исполнитель: {{ tasks.executorName }}</p>
                                         <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
                                         <p>Статус:
@@ -73,7 +73,7 @@
                                     {% for tasks in taskListAccepted %}
                                     <div class="board-item1">
                                     <div>
-                                        <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                        <p>Задача: <a href="/task/{{tasks.id}}/">{{ tasks.title }}</a></p>
                                         <p>Исполнитель: {{ tasks.executorName }}</p>
                                         <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
                                         <p>Статус:
@@ -108,7 +108,7 @@
                                     {% for tasks in taskListInWork %}
                                     <div class="board-item2">
                                     <div>
-                                        <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                        <p>Задача: <a href="/task/{{tasks.id}}/">{{ tasks.title }}</a></p>
                                         <p>Исполнитель: {{ tasks.executorName }}</p>
                                         <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
                                         <p>Статус:
@@ -143,7 +143,7 @@
                                     {% for tasks in taskListAccompaniment %}
                                     <div class="board-item3">
                                     <div>
-                                        <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                        <p>Задача: <a href="/task/{{tasks.id}}/">{{ tasks.title }}</a></p>
                                         <p>Исполнитель: {{ tasks.executorName }}</p>
                                         <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
                                         <p>Статус:
@@ -178,7 +178,7 @@
                                     {% for tasks in taskListStoped %}
                                     <div class="board-item5">
                                     <div>
-                                        <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                        <p>Задача: <a href="/task/{{tasks.id}}/">{{ tasks.title }}</a></p>
                                         <p>Исполнитель: {{ tasks.executorName }}</p>
                                         <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
                                         <p>Статус:
@@ -213,7 +213,7 @@
                                     {% for tasks in taskListCompleted %}
                                     <div class="board-item4">
                                     <div>
-                                        <p>Задача: <a href="task/{{tasks.id}}/">{{ tasks.title }}</a></p>
+                                        <p>Задача: <a href="/task/{{tasks.id}}/">{{ tasks.title }}</a></p>
                                         <p>Исполнитель: {{ tasks.executorName }}</p>
                                         <p>С {{ tasks.dateStart }} до {{ tasks.dateEnd }}</p>
                                         <p>Статус:
@@ -248,13 +248,13 @@
                                 <div class="table-responsive">
                                 <table class="table-dark table-condensed table-responsive">
                                     <thead>
-                                    <th>Задача<br>(нажмите чтобы открыть)</th>
-                                    <th>Описание</th>
-                                    <th>Исполнитель</th>
-                                    <th>Триггер<br>начала</th>
-                                    <th>Триггер<br>окончания</th>
-                                    <th>Ответственный</th>
-                                    <th>Проект</th>
+                                    <th style="width: 15%; max-width: 15%;">Задача<br> (нажмите чтобы открыть)</th>
+                                    <th style="width: 30%; max-width: 30%;">Описание</th>
+                                    <th style="width: 10%; max-width: 10%;">Исполнитель</th>
+                                    <th style="width: 5%; max-width: 5%;">Триггер<br>начала</th>
+                                    <th style="width: 5%; max-width: 5%;">Триггер<br>окончания</th>
+                                    <th style="width: 6%; max-width: 6%;">Ответственный</th>
+                                    <th style="width: 6%; max-width: 6%;">Название<br>проекта</th>
                                     <th>Ссылки</th>
                                     <th>Статус</th>
                                     <th>Действие</th>

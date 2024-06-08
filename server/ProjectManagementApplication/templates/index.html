@@ -21,7 +21,7 @@
             <h3>Блокнот:</h3>
             <textarea id="textarea_main" name="note">{{note}}</textarea>
         </p>
-        <input align="left" class="btn btn-dark" type="submit" value="Сохранить">
+        <input align="left" class="btn btn-sm btn-dark" type="submit" value="Сохранить">
       </form>
     </div>
 
@@ -32,7 +32,7 @@
             <h6>(Задачи которые нужно выполнить сегодня)</h6>
             {% if upcomingTasksList.count > 0%}
             <div class="table-responsive">
-            <table class="table-dark table-responsive">
+            <table class="notif-table table-dark table-responsive">
                 <thead>
                 <th>Задача</th>
                 <th>Назначил</th>
@@ -307,15 +307,15 @@
           {% endif %}
             {% if tasks.count > 0%}
           <div class="table-responsive">
-            <table class="table-dark table-condensed table-responsive">
+            <table class="table-dark table-responsive">
                 <thead>
-                <th>Задача<br> (нажмите чтобы открыть)</th>
-                <th>Описание</th>
-                <th>Исполнитель</th>
-                <th>Триггер<br>начала</th>
-                <th>Триггер<br>окончания</th>
-                <th>Назначил</th>
-                <th>Название<br>проекта</th>
+                <th style="width: 15%; max-width: 15%;">Задача<br> (нажмите чтобы открыть)</th>
+                <th style="width: 30%; max-width: 30%;">Описание</th>
+                <th style="width: 10%; max-width: 10%;">Исполнитель</th>
+                <th style="width: 5%; max-width: 5%;">Триггер<br>начала</th>
+                <th style="width: 5%; max-width: 5%;">Триггер<br>окончания</th>
+                <th style="width: 6%; max-width: 6%;">Назначил</th>
+                <th style="width: 6%; max-width: 6%;">Название<br>проекта</th>
                 <th>Ссылки</th>
                 <th>Статус</th>
                 </thead>
@@ -529,7 +529,7 @@
             <h6>(Задачи которые нужно выполнить сегодня)</h6>
             {% if upcomingTasksList.count > 0%}
             <div class="table-responsive">
-            <table class="table-dark table-responsive">
+            <table class="notif-table table-dark table-responsive">
                 <thead>
                 <th>Задача</th>
                 <th>Назначил</th>
@@ -802,16 +802,16 @@
           {% endif %}
             {% if tasks.count > 0%}
           <div class="table-responsive">
-            <table class="table-dark table-condensed table-responsive">
+            <table class="table-dark table-responsive">
                 <thead>
-                <th>Задача<br> (нажмите чтобы открыть)</th>
-                <th>Описание</th>
-                <th>Триггер начала</th>
-                <th>Триггер окончания</th>
-                <th>Назначил</th>
-                <th>Название проекта</th>
-                <th>Ссылки</th>
-                <th>Статус</th>
+                  <th style="width: 15%; max-width: 15%;">Задача<br> (нажмите чтобы открыть)</th>
+                  <th style="width: 30%; max-width: 30%;">Описание</th>
+                  <th style="width: 5%; max-width: 5%;">Триггер<br>начала</th>
+                  <th style="width: 5%; max-width: 5%;">Триггер<br>окончания</th>
+                  <th style="width: 6%; max-width: 6%;">Назначил</th>
+                  <th style="width: 6%; max-width: 6%;">Название<br>проекта</th>
+                  <th>Ссылки</th>
+                  <th style="width: 6%; max-width: 6%;">Статус</th>
                 </thead>
                 <tr class="table-light" bgcolor="#ffffff">
                     <td style="color: #000000" colspan="11"><b>Приняты</b></td>
